@@ -1,24 +1,16 @@
 import { z } from "zod"
 
+export const activitySchema = z.object({
+  name: z.string().min(1, "Activity name is required"),
+  description: z.string().min(1, "Process description is required"),
+  impacts: z.array(z.string()).default([]),       
+  impactDescription: z.string().optional().default(""),
+})
+
 export const step1Schema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  firstName: z.string().min(3, "First name must be at least 3 characters"),
-  lastName: z.string().min(3, "Last name must be at least 3 characters"),
+  activities: z.array(activitySchema).min(1, "At least one activity is required"),
 })
-
-export const step2Schema = z.object({
-  country: z
-    .string()
-    .min(2, "Country must be at least 2 characters")
-    .max(100, "Country must be less than 100 characters"),
-  city: z.string().min(2, "City must be at least 2 characters"),
-})
-
-export const step3Schema = z.object({
-  // cardNumber, cardHolder, cvv — to be filled later
-})
-
 
 export const CombinedCheckoutSchema = step1Schema
-  .merge(step2Schema)
-  .merge(step3Schema)
+  .merge(activitySchema)
+  .merge(step1Schema)

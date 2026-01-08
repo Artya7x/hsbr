@@ -13,6 +13,11 @@ export const MultiStepFormContext = createContext(null)
 function MultiStepForm({ steps }) {
   const methods = useForm({
     resolver: zodResolver(CombinedCheckoutSchema),
+    defaultValues: {
+      activities: [
+        {name: "", description: "", impacts:[], impactDescription: ""}
+      ],
+    },
   })
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0)

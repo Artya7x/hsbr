@@ -1,41 +1,40 @@
-import React from "react";
-import { Button } from "../ui/button";
-import {Input} from "../ui/input";
-import {Textarea} from "../ui/textarea";
-export default function ActivitiesTable({ rows, setRows }) {
+import React from "react"
+import { useFormContext, useFieldArray } from "react-hook-form"
+import { Button } from "../ui/button"
+import { Input } from "../ui/input"
+import { Textarea } from "../ui/textarea"
+
+export default function ActivitiesTable() {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext()
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "activities",
+  })
 
   function addRow() {
-    setRows([...rows, { name: "", description: "", impacts: [], impactDescription: "" }]);
-  }
-
-  function updateCell(rowIndex, field, value) {
-    const next = rows.map((row, index) => {
-      if (index === rowIndex) {
-        return { ...row, [field]: value };
-      }
-      return row;
-    });
-
-    setRows(next);
-  }
-
-  function removeRow(rowIndex) {
-    setRows(rows.filter((_, index) => index !== rowIndex));
+    append({
+      name: "",
+      description: "",
+      impacts: [],
+      impactDescription: "",
+    })
   }
 
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-lg font-semibold">Activities</h2>
-        <Button
-          onClick={addRow}
-          className="px-3 py-2 rounded border"
-        >
+        <Button type="button" onClick={addRow}>
           + Add activity
         </Button>
       </div>
 
-      <div className="overflow-x-auto border-2 rounded-lg  shadow-sm">
+      <div className="overflow-x-auto border-2 rounded-lg shadow-sm">
         <table className="w-full text-sm">
           <thead className="border-b">
             <tr>
@@ -46,53 +45,67 @@ export default function ActivitiesTable({ rows, setRows }) {
           </thead>
 
           <tbody>
-            {rows.length === 0 ? (
-              <tr className = "text-center">
-                <td className="p-3 text-gray-500" colSpan={3}>
+            {fields.length === 0 ? (
+              <tr>
+                <td colSpan={3} className="p-3 text-center text-gray-500">
                   No activities yet. Click “Add activity”.
                 </td>
               </tr>
             ) : (
-              rows.map((row, idx) => (
-                <tr key={idx} className="border-b">
-                  <td className="p-3 align-top">
-                    <Input
-                      className="w-full border rounded px-2 py-1"
-                      value={row.name}
-                      onChange={(e) =>
-                        updateCell(idx, "name", e.target.value)
-                      }
-                      placeholder="e.g., Customer Support"
-                    />
-                  </td>
+              fields.map((field, idx) => {
+                const nameError =
+                  errors?.activities?.[idx]?.name?.message
+                const descError =
+                  errors?.activities?.[idx]?.description?.message
 
-                  <td className="p-3 align-top">
-                    <Textarea
-                      className="w-full border rounded px-2 py-1 "
-                      value={row.description}
-                      onChange={(e) =>
-                        updateCell(idx, "description", e.target.value)
-                      }
-                      placeholder="Describe processes..."
-                    />
-                  </td>
+                return (
+                  <tr key={field.id} className="border-b">
+                    <td className="p-3 align-top">
+                      <Input
+                        {...register(`activities.${idx}.name`)}
+                        placeholder="e.g., Customer Support"
+                      />
+                      {nameError && (
+                        <p className="mt-1 text-xs text-red-600">
+                          {nameError}
+                        </p>
+                      )}
+                    </td>
 
-                  <td className="p-3 align-top text-right">
-                    <Button
-                      
-                      variant= "outline"
-                      onClick={() => removeRow(idx)}
-                      className="px-3 py-2 rounded border"
-                    >
-                      Remove
-                    </Button>
-                  </td>
-                </tr>
-              ))
+                    <td className="p-3 align-top">
+                      <Textarea
+                        {...register(`activities.${idx}.description`)}
+                        placeholder="Describe processes..."
+                      />
+                      {descError && (
+                        <p className="mt-1 text-xs text-red-600">
+                          {descError}
+                        </p>
+                      )}
+                    </td>
+
+                    <td className="p-3 align-top text-right">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => remove(idx)}
+                      >
+                        Remove
+                      </Button>
+                    </td>
+                  </tr>
+                )
+              })
             )}
           </tbody>
         </table>
       </div>
+
+      {errors?.activities?.message && (
+        <p className="mt-2 text-sm text-red-600">
+          {errors.activities.message}
+        </p>
+      )}
     </div>
-  );
+  )
 }
