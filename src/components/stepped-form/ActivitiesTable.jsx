@@ -3,7 +3,7 @@ import { useFormContext, useFieldArray } from "react-hook-form"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
-
+import { TIME_INTERVALS } from "../shared/timePeriod"
 export default function ActivitiesTable() {
   const {
     control,
@@ -22,6 +22,20 @@ export default function ActivitiesTable() {
       description: "",
       impacts: [],
       impactDescription: "",
+      impactMatrix: TIME_INTERVALS.map(interval => ({
+    intervalId: interval.id,
+    severity: null,
+  })),
+
+  recovery: {
+    rtoHours: null,
+    mtpdHours: null,
+    rpo: null,
+    rpoDetails: {
+      frequency: "",
+      duration: "",
+    },
+  },
     })
   }
 
