@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-// classification is derived from RTO + org rules (configurable later)
+
 function classifyByRto(rtoHours) {
     if (rtoHours === null || rtoHours === undefined || rtoHours === "") return null
 
@@ -44,12 +44,12 @@ export default function ImpactMatrixTable() {
             <div className="overflow-x-auto border-2 rounded-lg shadow-sm max-w-full">
 
                 <table className="w-full text-sm border-collapse">
-                    {/* HEADER */}
-                    <thead className="border-b bg-gray-50">
+
+                    <thead className="border-b ">
                         <tr>
                             <th className="p-3 text-left w-[220px]">Activity</th>
 
-                            {/* Impact-by-interval columns */}
+
                             {TIME_INTERVALS.map((interval) => (
                                 <th
                                     key={interval.id}
@@ -59,17 +59,16 @@ export default function ImpactMatrixTable() {
                                 </th>
                             ))}
 
-                            {/* Recovery objectives */}
+
                             <th className="p-3 text-center min-w-[120px]">RTO (hrs)</th>
                             <th className="p-3 text-center min-w-[120px]">MTPD (hrs)</th>
                             <th className="p-3 text-center min-w-[160px]">RPO</th>
 
-                            {/* Derived criticality */}
+
                             <th className="p-3 text-center min-w-[170px]">Criticality</th>
                         </tr>
                     </thead>
 
-                    {/* BODY */}
                     <tbody>
                         {activities.map((activity, activityIndex) => {
                             const rto = activity?.recovery?.rtoHours ?? ""
@@ -80,15 +79,15 @@ export default function ImpactMatrixTable() {
 
                             return (
                                 <tr key={activityIndex} className="border-b align-top">
-                                    {/* Activity name */}
+
                                     <td className="p-3 font-medium">
                                         {activity.name || "(Unnamed activity)"}
                                     </td>
 
-                                    {/* Impact matrix cells */}
+
                                     {Array.isArray(activity.impactMatrix) &&
                                         activity.impactMatrix.map((cell, cellIndex) => (
- 
+
                                             <td key={cell.intervalId} className="p-3">
                                                 <div className="flex flex-col gap-1">
                                                     <select
@@ -106,15 +105,17 @@ export default function ImpactMatrixTable() {
                                                             <option
                                                                 key={`${cell.intervalId}-${scale.value}`}
                                                                 value={scale.value}
-                                                            ></option>
+                                                            >
+                                                                {scale.label}
+                                                            </option>
                                                         ))}
+
                                                     </select>
 
                                                 </div>
                                             </td>
                                         ))}
 
-                                    {/* RTO */}
                                     <td className="p-3">
                                         <Input
                                             type="number"
@@ -131,7 +132,7 @@ export default function ImpactMatrixTable() {
                                         />
                                     </td>
 
-                                    {/* MTPD */}
+
                                     <td className="p-3">
                                         <Input
                                             type="number"
@@ -148,7 +149,7 @@ export default function ImpactMatrixTable() {
                                         />
                                     </td>
 
-                                    {/* RPO */}
+
                                     <td className="p-3">
                                         <select
                                             className="w-full border rounded-md px-2 py-2 text-sm"
@@ -166,7 +167,7 @@ export default function ImpactMatrixTable() {
                                             <option value="replication">Replication</option>
                                         </select>
 
-                                        {/* Optional: show replication details later (frequency/duration) */}
+
                                         {rpo === "replication" ? (
                                             <div className="mt-2 space-y-2">
                                                 <Input
@@ -193,7 +194,7 @@ export default function ImpactMatrixTable() {
                                         ) : null}
                                     </td>
 
-                                    {/* Criticality (derived) */}
+
                                     <td className="p-3 text-center">
                                         {classification ? (
                                             <div className="inline-flex flex-col items-center gap-1">

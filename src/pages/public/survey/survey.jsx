@@ -13,15 +13,13 @@ export const checkoutSteps = [
   {
     title: "Step 1: Business Impact Analysis",
     component: <Test />,
-    icon: User,
     position: 1,
     fields: ["activities"],
   },
   {
-    title: "Step 1: Business Impact Analysis",
-    component: <step1 />,
-    icon: User,
-    position: 1,
+    title: "Step 2: Business Impact Analysis",
+    component: <Test />,
+    position: 2,
     fields: ["activities"],
   }
 ]

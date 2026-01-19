@@ -60,7 +60,7 @@ export default function AppSidebar(props) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className=" relative group transition-all duration-200 hover:text-blue-600 hover:font-semibold">
+           >
               <a href="#">
                 <IconHome className="!size-5" />
                 <span>Dashboard</span>

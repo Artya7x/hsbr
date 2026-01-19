@@ -23,6 +23,7 @@ export default function Test(){
       <div>
       <ActivitiesTable  />
      
+      <ImpactMatrixTable ></ImpactMatrixTable>
     </div>
   )
 }
