@@ -35,7 +35,7 @@ export default function ProgressIndicator() {
                   onClick={() => goToStep(step.position)}
                   className={`flex size-10 items-center justify-center rounded-full border-2 ${
                     isCompleted || isCurrent
-                      ? "border-black bg-black text-white"
+                      ? "border-[oklch(0.28_0.07_255)] bg-[oklch(0.28_0.07_255)] text-white"
                       : "border-gray-200 bg-white text-gray-400"
                   }`}
                   initial={false}
@@ -47,7 +47,7 @@ export default function ProgressIndicator() {
                   {isCompleted ? (
                     <Check className="h-6 w-6" />
                   ) : (
-                    <h1>1</h1>
+                    <h1>{step.position}</h1>
                   )}
                 </motion.button>
 

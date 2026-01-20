@@ -21,6 +21,8 @@ const buttonVariants = cva(
           'text-accent-foreground hover:bg-accent hover:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
         dim: 'text-muted-foreground hover:text-foreground data-[state=open]:text-foreground',
         impacts: "text-sm p-0 bg-primary text-primary-foreground p-0 text-sm",
+        classic: "bg-[oklch(0.28_0.07_255)] text-white hover:bg-[oklch(0.32_0.07_255)]",
+        options: "inline-flex items-center gap-2 rounded-lg border border-border bg-white px-3 py-2 text-sm font-medium text-foreground shadow-sm transition ",
         foreground: '',
         inverse: '',
       },

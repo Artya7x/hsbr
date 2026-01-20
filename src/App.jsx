@@ -17,7 +17,7 @@ function App() {
     <Route path="/surveys/:id" element={<Surveys/>} />
     <Route path="/survey" element={<Survey/>} />
   </Routes>
- 
+
   );
 
 }

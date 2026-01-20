@@ -3,6 +3,7 @@ import { useFormContext, useFieldArray } from "react-hook-form"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
+import { X } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -93,12 +94,12 @@ export default function ActivitiesTable() {
     <Card className="border border-slate-200 shadow-sm">
       {/* Header */}
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-base font-medium">
+        <CardTitle className="text-base font-medium ">
           Activities
         </CardTitle>
 
-        <Button type="button" onClick={addRow}>
-          + Add activity
+        <Button type="button" variant="classic" onClick={addRow}>
+          Add activity
         </Button>
       </CardHeader>
 
@@ -106,9 +107,9 @@ export default function ActivitiesTable() {
       <CardContent className="pt-0">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="border-b bg-slate-50">
+            <thead className="border-b border-round bg-slate-50">
               <tr>
-                <th className="p-3 text-left font-medium">
+                <th className="p-3 text-left font-medium ">
                   Activity name
                 </th>
                 <th className="p-3 text-left font-medium">
@@ -198,7 +199,7 @@ export default function ActivitiesTable() {
                             <Button
                               key={opt}
                               type="button"
-                              variant="outline"
+                              variant= "options"
                               className={`px-2 py-1 text-xs rounded-full ${
                                 selected
                                   ? "bg-orange-500 text-white border-orange-500"
@@ -239,16 +240,14 @@ export default function ActivitiesTable() {
                       />
                     </td>
 
-                    {/* Remove */}
+                  
                     <td className="p-3 text-right">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="text-red-600"
+                      <button
+                        className="inline-flex items-center justify-center p-2 cursor-pointer "
                         onClick={() => remove(idx)}
                       >
-                        Remove
-                      </Button>
+                        <X className="h-4 w-4 text-red-600 hover:text-red-700" />
+                      </button>
                     </td>
                   </tr>
                 )

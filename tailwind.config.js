@@ -5,7 +5,12 @@ export default {
     "./src/**/*.{js,jsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        comic: ["Comic Neue", "cursive"],
+      },
+    },
+
   },
   plugins: [],
-}
+};

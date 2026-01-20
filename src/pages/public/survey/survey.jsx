@@ -21,6 +21,12 @@ export const checkoutSteps = [
     component: <Test />,
     position: 2,
     fields: ["activities"],
+  },
+  {
+    title: "Step 3: Business Impact Analysis",
+    component: <Test />,
+    position: 3,
+    fields: ["activities"],
   }
 ]
 
