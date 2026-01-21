@@ -1,6 +1,5 @@
-import Step1 from "./step1"
-import Step2 from "./step2"
-import Step3 from "./step3"
+
+import Step2 from "./step22"
 import Test from "./steptest"
 import DashboardLayout from "@/components/layout/DashBoardLayout";
 
@@ -18,16 +17,11 @@ export const checkoutSteps = [
   },
   {
     title: "Step 2: Business Impact Analysis",
-    component: <Test />,
+    component: <Step2 />,
     position: 2,
     fields: ["activities"],
   },
-  {
-    title: "Step 3: Business Impact Analysis",
-    component: <Test />,
-    position: 3,
-    fields: ["activities"],
-  }
+
 ]
 
 export default function Survey() {

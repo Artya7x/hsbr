@@ -105,9 +105,9 @@ export default function ActivitiesTable() {
 
       {/* Content */}
       <CardContent className="pt-0">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-xl border border-border ">
           <table className="w-full text-sm">
-            <thead className="border-b border-round bg-slate-50">
+            <thead className=" border-b text-muted-foreground shadow-[inset_0_-1px_0_0_hsl(var(--border))]">
               <tr>
                 <th className="p-3 text-left font-medium ">
                   Activity name

@@ -1,13 +1,13 @@
 
 
 export const TIME_INTERVALS = [
-  { id: "1h", label: "1 ώρα", hours: 1 },
-  { id: "6h", label: "6 ώρες", hours: 6 },
-  { id: "12h", label: "12 ώρες", hours: 12 },
-  { id: "24h", label: "24 ώρες", hours: 24 },
-  { id: "48h", label: "48 ώρες", hours: 48 },
-  { id: "72h", label: "72 ώρες", hours: 72 },
-  { id: "gt72h", label: ">72 ώρες", hours: 999 },
+  { id: "1h", label: "1 h", hours: 1 },
+  { id: "6h", label: "6 h", hours: 6 },
+  { id: "12h", label: "12 h", hours: 12 },
+  { id: "24h", label: "24 h", hours: 24 },
+  { id: "48h", label: "48 h", hours: 48 },
+  { id: "72h", label: "72 h", hours: 72 },
+  { id: "gt72h", label: ">72 h", hours: 999 },
 ]
 
 //This is constant for now. Later for each orgnizaiton will be different 

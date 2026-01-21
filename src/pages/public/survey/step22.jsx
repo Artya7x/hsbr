@@ -5,7 +5,8 @@ import ActivitiesTable from "../../../components/stepped-form/ActivitiesTable"
 import React, {useState} from "react";
 import ImpactTable from "@/components/stepped-form/ImpactTable"
 import ImpactMatrixTable from "@/components/stepped-form/ImpactTimes";
-export default function Test(){
+import ImpactTimes from "@/components/stepped-form/ImpactTimes";
+export default function Step2(){
   
   const {register,getValues,setError,formState: { errors }} = useFormContext()
 
@@ -21,9 +22,7 @@ export default function Test(){
 
   return (
       <div>
-      <ActivitiesTable  />
-     
-      <ImpactMatrixTable ></ImpactMatrixTable>
+        <ImpactTimes />
     </div>
   )
 }

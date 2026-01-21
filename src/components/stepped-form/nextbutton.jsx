@@ -8,7 +8,8 @@ export default function NextButton() {
     <Button
       type={isLastStep ? "submit" : "button"}
       onClick={!isLastStep ? nextStep : undefined}
-      className="text-white bg-black hover:bg-slate-950 transition-colors w-full py-6"
+      variant="classic"
+      className="text-white w-full py-6"
     >
       {isLastStep ? "Submit" : "Continue"}
     </Button>
