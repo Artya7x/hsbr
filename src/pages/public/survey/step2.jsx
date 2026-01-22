@@ -1,35 +1,27 @@
 import { useFormContext } from "react-hook-form"
-import { Input } from "@/components/ui/input"
-import ErrorMessage from "@/components/ui/error-message"
 
-export default function Step2() {
+import { useMultiStepForm } from "../../../hooks/use-stepped-form"
+import React, {useState} from "react";
 
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext()
+import ImpactTimes from "@/components/stepped-form/ImpactTimes";
+export default function Step2(){
+  
+  const {register,getValues,setError,formState: { errors }} = useFormContext()
+
+
+
+  const { nextStep } = useMultiStepForm()
+
+  const handleStepSubmit = async () => {
+   
+
+    nextStep()
+  }
 
   return (
-    <div className="flex flex-col gap-3">
       <div>
-        <Input {...register("country")} placeholder="Country" />
-        <ErrorMessage message={errors.country?.message} />
-      </div>
-
-      <div>
-        <Input {...register("city")} placeholder="City" />
-        <ErrorMessage message={errors.city?.message} />
-      </div>
-
-      <div>
-        <Input
-          {...register("shippingAddress")}
-          placeholder="Shipping Address"
-        />
-        <ErrorMessage message={errors.shippingAddress?.message} />
-      </div>
+        <ImpactTimes />
     </div>
   )
 }
-
 

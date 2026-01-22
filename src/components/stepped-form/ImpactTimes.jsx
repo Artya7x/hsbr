@@ -50,31 +50,31 @@ export default function ImpactMatrixTable() {
         <div className="overflow-x-auto rounded-xl border border-border bg-white">
           <table className="w-full text-sm">
             {/* Header */}
-            <thead className="bg-white text-muted-foreground">
-              <tr className="border-b border-border/60">
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide w-[220px]">
+            <thead className=" bg-[oklch(97.541%_0.01161_264.582)] text-muted-foreground  ">
+              <tr className="border-b border-border/60 ">
+                <th className="px-6 py-3 text-left   tracking-wide w-[220px]">
                   Activity
                 </th>
 
                 {TIME_INTERVALS.map((interval) => (
                   <th
                     key={interval.id}
-                    className="px-9 py-3 text-center text-xs font-medium uppercase tracking-wide min-w-[190px]"
+                    className="px-9 py-3 text-center  tracking-wide min-w-[190px]"
                   >
                     {interval.label}
                   </th>
                 ))}
 
-                <th className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wide min-w-[130px]">
+                <th className="px-6 py-3 text-center  tracking-wide min-w-[130px]">
                   RTO (hrs)
                 </th>
-                <th className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wide min-w-[130px]">
+                <th className="px-6 py-3 text-center   tracking-wide min-w-[130px]">
                   MTPD (hrs)
                 </th>
-                <th className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wide min-w-[190px]">
+                <th className="px-6 py-3 text-center  tracking-wide min-w-[190px]">
                   RPO
                 </th>
-                <th className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wide min-w-[190px]">
+                <th className="px-6 py-3 text-center  tracking-wide min-w-[190px]">
                   Criticality
                 </th>
               </tr>

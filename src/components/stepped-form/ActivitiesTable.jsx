@@ -3,7 +3,7 @@ import { useFormContext, useFieldArray } from "react-hook-form"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
-import { X } from "lucide-react";
+import { Trash } from 'lucide-react';
 import {
   Card,
   CardHeader,
@@ -107,7 +107,7 @@ export default function ActivitiesTable() {
       <CardContent className="pt-0">
         <div className="overflow-x-auto rounded-xl border border-border ">
           <table className="w-full text-sm">
-            <thead className=" border-b text-muted-foreground shadow-[inset_0_-1px_0_0_hsl(var(--border))]">
+            <thead className=" border-b   bg-[oklch(97.541%_0.01161_264.582)] ">
               <tr>
                 <th className="p-3 text-left font-medium ">
                   Activity name
@@ -159,11 +159,12 @@ export default function ActivitiesTable() {
                     key={field.id}
                     className="border-b align-top"
                   >
-                    {/* Activity name */}
+                  
                     <td className="p-3">
                       <Input
                         {...register(`activities.${idx}.name`)}
-                        placeholder="Customer Support"
+                        placeholder="e.g., Customer Support"
+                        className="h-12"
                       />
                       {nameError && (
                         <p className="mt-1 text-xs text-red-600">
@@ -172,7 +173,7 @@ export default function ActivitiesTable() {
                       )}
                     </td>
 
-                    {/* Process description */}
+                    
                     <td className="p-3">
                       <Textarea
                         {...register(
@@ -217,7 +218,7 @@ export default function ActivitiesTable() {
 
                       <Input
                         placeholder="Add custom impact"
-                        className="text-xs"
+                        className="text-xs mt-7"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault()
@@ -241,12 +242,12 @@ export default function ActivitiesTable() {
                     </td>
 
                   
-                    <td className="p-3 text-right">
+                    <td className="p-3 pt-5">
                       <button
                         className="inline-flex items-center justify-center p-2 cursor-pointer "
                         onClick={() => remove(idx)}
                       >
-                        <X className="h-4 w-4 text-red-600 hover:text-red-700" />
+                        <Trash className="h-6 w-6 text-red-700 hover:text-red-900 " />
                       </button>
                     </td>
                   </tr>

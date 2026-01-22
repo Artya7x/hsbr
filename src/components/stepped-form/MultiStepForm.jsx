@@ -2,7 +2,7 @@ import { createContext, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { CombinedCheckoutSchema } from "@/validators/checkout-flow.validator"
+import { checkoutSchema } from "@/validators/checkout-flow.validator"
 
 import PrevButton from "./prevbutton"
 import NextButton from "./nextbutton"
@@ -14,12 +14,13 @@ export const MultiStepFormContext = createContext(null)
 function MultiStepForm({ steps }) {
   
   const methods = useForm({
-    resolver: zodResolver(CombinedCheckoutSchema),
+    resolver: zodResolver(checkoutSchema),
     defaultValues: {
       activities: [
         {
           name: "", description: "", impacts: [], impactDescription: "",
-
+          dependsOn: null,
+          requiredBy: null,
           impactMatrix: TIME_INTERVALS.map((interval) => ({
             intervalId: interval.id,
             severity: null,
