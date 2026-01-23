@@ -97,7 +97,6 @@ export default function ActivitiesTable() {
         <CardTitle className="text-base font-medium ">
           Activities
         </CardTitle>
-
         <Button type="button" variant="classic" onClick={addRow}>
           Add activity
         </Button>
@@ -109,16 +108,16 @@ export default function ActivitiesTable() {
           <table className="w-full text-sm">
             <thead className=" border-b   bg-[oklch(97.541%_0.01161_264.582)] ">
               <tr>
-                <th className="p-3 text-left font-medium ">
+                <th className="px-5 py-3 text-left font-medium">
                   Activity name
                 </th>
-                <th className="p-3 text-left font-medium">
+                <th className="px-5 py-3 text-left font-medium">
                   Process description
                 </th>
-                <th className="p-3 text-left font-medium">
+                <th className="px-5 py-3 text-left font-medium">
                   Select impacts
                 </th>
-                <th className="p-3 text-left font-medium w-[260px]">
+                <th className="px-5 py-3 text-left font-medium w-[260px]">
                   Impact description
                 </th>
                 <th className="p-3 w-[90px]"></th>

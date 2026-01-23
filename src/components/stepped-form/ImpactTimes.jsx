@@ -40,41 +40,39 @@ export default function ImpactMatrixTable() {
 
   return (
     <Card className="mt-10 border border-border shadow-sm">
-      <CardHeader className="pb-2">
+       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-base font-medium">
           Impact Severity, Recovery Objectives, and Criticality
         </CardTitle>
       </CardHeader>
 
       <CardContent className="pt-0">
-        <div className="overflow-x-auto rounded-xl border border-border bg-white">
+        <div className="overflow-x-auto rounded-xl border border-border ">
           <table className="w-full text-sm">
             {/* Header */}
             <thead className=" bg-[oklch(97.541%_0.01161_264.582)] text-muted-foreground  ">
               <tr className="border-b border-border/60 ">
-                <th className="px-6 py-3 text-left   tracking-wide w-[220px]">
-                  Activity
-                </th>
+                <th className="px-6 py-3 text-left  tracking-wide font-medium min-w-[190px]">Activity</th>
 
                 {TIME_INTERVALS.map((interval) => (
                   <th
                     key={interval.id}
-                    className="px-9 py-3 text-center  tracking-wide min-w-[190px]"
+                    className="px-9 py-3 text-center font-medium  tracking-wide min-w-[190px]"
                   >
                     {interval.label}
                   </th>
                 ))}
 
-                <th className="px-6 py-3 text-center  tracking-wide min-w-[130px]">
+                <th className="px-6 py-3 text-center font-medium tracking-wide min-w-[130px]">
                   RTO (hrs)
                 </th>
-                <th className="px-6 py-3 text-center   tracking-wide min-w-[130px]">
+                <th className="px-6 py-3 text-center  font-medium tracking-wide min-w-[130px]">
                   MTPD (hrs)
                 </th>
-                <th className="px-6 py-3 text-center  tracking-wide min-w-[190px]">
+                <th className="px-6 py-3 text-center font-medium tracking-wide min-w-[190px]">
                   RPO
                 </th>
-                <th className="px-6 py-3 text-center  tracking-wide min-w-[190px]">
+                <th className="px-6 py-3 text-center font-medium tracking-wide min-w-[190px]">
                   Criticality
                 </th>
               </tr>
@@ -94,7 +92,7 @@ export default function ImpactMatrixTable() {
                     className="align-top border-b border-border/40 last:border-b-0 "
                   >
                     {/* Activity name */}
-                    <td className="px-6 py-3 font-medium">
+                    <td className="px-6 py-3 font-medium text-slate-700">
                       {activity.name || "(Unnamed activity)"}
                     </td>
 

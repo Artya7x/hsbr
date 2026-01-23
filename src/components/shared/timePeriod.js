@@ -26,19 +26,19 @@ export const IMPACT_SCALE = [
 export const CLASSIFICATION_RULES = [
   {
     level: "critical",
-    label: "Κρίσιμη / Ζωτική",
+    label: "Critical / Vital",
     maxRtoHours: 24,
     color: "red",
   },
   {
     level: "important",
-    label: "Σημαντική / Απαραίτητη",
+    label: "Important / Essential",
     maxRtoHours: 72,
     color: "orange",
   },
   {
     level: "useful",
-    label: "Χρήσιμη",
+    label: "Useful",
     maxRtoHours: Infinity,
     color: "green",
   },

@@ -24,9 +24,9 @@ export default function ActivitiesDependencies() {
           <table className="w-full text-sm">
             <thead className="border-b bg-background text-muted-foreground">
               <tr>
-                <th className="p-3 text-left font-medium">Activity name</th>
-                <th className="p-3 text-left font-medium">Depends on</th>
-                <th className="p-3 text-left font-medium">Required by</th>
+                <th className="px-6 py-3 text-left font-medium">Activity</th>
+                <th className="px-6 py-3 text-left font-medium">Depends on</th>
+                <th className="px-6 py-3 text-left font-medium">Required by</th>
               </tr>
             </thead>
 
@@ -36,8 +36,8 @@ export default function ActivitiesDependencies() {
                   key={field.id}
                   className="align-top border-b border-border/40 last:border-b-0"
                 >
-                  <td className="px-6 py-3 font-medium">
-                    {activities[idx]?.name || `Activity ${idx + 1}`}
+                  <td className="px-6 py-3 font-medium text-slate-700">
+                    {activities[idx]?.name || " No activity name"}
                   </td>
 
                   <td className="px-6 py-3">

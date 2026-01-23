@@ -1,7 +1,9 @@
 
 import Step2 from "./Step2"
 import Step1 from "./Step1"
-import Step3 from "./Step3"
+import Step3 from "./step3"
+import Step4 from "./step4"
+import Step5 from "./step5"
 import DashboardLayout from "@/components/layout/DashBoardLayout";
 
 
@@ -26,6 +28,18 @@ export const checkoutSteps = [
     title: "Step 2: Business Impact Analysis",
     component: <Step3 />,
     position: 3,
+    fields: ["activities"],
+  },
+   {
+    title: "Step 2: Business Impact Analysis",
+    component: <Step4 />,
+    position: 4,
+    fields: ["activities"],
+  },
+  {
+    title: "Step 2: Business Impact Analysis",
+    component: <Step5 />,
+    position: 5,
     fields: ["activities"],
   },
 

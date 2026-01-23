@@ -12,7 +12,7 @@ import { TIME_INTERVALS } from "../shared/timePeriod"
 export const MultiStepFormContext = createContext(null)
 
 function MultiStepForm({ steps }) {
-  
+
   const methods = useForm({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
@@ -35,8 +35,30 @@ function MultiStepForm({ steps }) {
               duration: "",
             },
           },
+          workEnvironment: {
+            staffingLevel: 0,
+            workstations: 0,
+            additionalResources: [],
+            systems: [],
+            physicalArchives: {
+              criticality: "critical" | "not_critical" | null,
+              description: ""
+            },
+            fireproofCabinets: "",
+          },
+          externalDependencies: [
+            {
+              activityIndex: 0,
+              companyName: "",
+              email: "",
+              phone: "",
+              resources: [],
+            },
+          ],
+
         }
       ],
+
     },
   })
 
@@ -85,11 +107,11 @@ function MultiStepForm({ steps }) {
     <MultiStepFormContext.Provider value={value}>
       <FormProvider {...methods}>
         <div className="mx-auto w-full max-w-[1600px] px-8 ">
-          <div className = "bg-card rounded-xl border p-5 mb-4 mt-7">
-          <ProgressIndicator />
+          <div className="bg-card rounded-xl border p-5 mb-4 mt-7">
+            <ProgressIndicator />
           </div>
           <form onSubmit={methods.handleSubmit(submitSteppedForm)}>
-           
+
             {currentStep.component}
             <div className="flex mt-6 gap-4">
               <PrevButton />
@@ -100,7 +122,7 @@ function MultiStepForm({ steps }) {
         </div>
       </FormProvider>
     </MultiStepFormContext.Provider>
-    
+
   )
 }
 
