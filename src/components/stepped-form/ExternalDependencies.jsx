@@ -1,5 +1,5 @@
 import React, { useMemo } from "react"
-import { useFormContext, useFieldArray, Controller } from "react-hook-form"
+import { useFormContext, useFieldArray, Controller, useWatch } from "react-hook-form"
 import CreatableSelect from "react-select/creatable"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
@@ -17,7 +17,7 @@ export default function ExternalDependenciesTable() {
   })
 
   const activities = watch("activities") || []
-  const allDeps = watch("externalDependencies") || []
+  const allDeps = useWatch({ control, name: "externalDependencies" }) || []
 
   function addRow() {
     append({
@@ -263,7 +263,7 @@ export default function ExternalDependenciesTable() {
                   </td>
 
                   {/* Delete */}
-                  <td className="p-3 pt-5">
+                  <td className="p-3 pt-2">
                     <button
                       type="button"
                       onClick={() => remove(idx)}
