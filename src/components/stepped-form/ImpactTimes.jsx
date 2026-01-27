@@ -256,14 +256,13 @@ export default function ImpactMatrixTable() {
     )
   }
 
-
   return (
 
     <Card className="mt-10 border border-border shadow-sm">
 
       <Tabs defaultValue="Impact Severity">
 
-        <CardHeader className="flex flex-col gap-4">
+        <CardHeader className="flex flex-col gap-4 pb-0">
           <CardTitle className="text-base font-medium">
             Impact Severity, Recovery Objectives, and Criticality
           </CardTitle>

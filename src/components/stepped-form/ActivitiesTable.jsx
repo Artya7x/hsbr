@@ -12,6 +12,10 @@ import {
 } from "../ui/card"
 import { TIME_INTERVALS } from "../shared/timePeriod"
 
+import {useState} from "react";
+import CreatableSelect from "react-select/creatable"
+
+
 const IMPACT_OPTIONS = [
   "High energy usage",
   "Privacy risk",
@@ -90,6 +94,9 @@ export default function ActivitiesTable() {
     })
   }
 
+
+  const [impactOptions, setImpactOptions] = useState( IMPACT_OPTIONS.map(i => ({ lable: i, value: i})))
+
   return (
     <Card className="border border-slate-200 shadow-sm">
       {/* Header */}
@@ -108,13 +115,13 @@ export default function ActivitiesTable() {
           <table className="w-full text-sm">
             <thead className=" border-b   bg-[oklch(97.541%_0.01161_264.582)] ">
               <tr>
-                <th className="px-5 py-3 text-left font-medium">
+                <th className="px-5 py-3 text-left font-medium w-[250px]">
                   Activity name
                 </th>
                 <th className="px-5 py-3 text-left font-medium">
                   Process description
                 </th>
-                <th className="px-5 py-3 text-left font-medium">
+                <th className="px-5 py-3 text-left font-medium w-[350px]">
                   Select impacts
                 </th>
                 <th className="px-5 py-3 text-left font-medium w-[260px]">
@@ -143,22 +150,14 @@ export default function ActivitiesTable() {
                 const descError =
                   errors?.activities?.[idx]?.description?.message
 
-                const customImpacts =
-                  activity.impacts?.filter(
-                    (i) => !IMPACT_OPTIONS.includes(i)
-                  ) || []
-
-                const allImpactOptions = [
-                  ...IMPACT_OPTIONS,
-                  ...customImpacts,
-                ]
+               
 
                 return (
                   <tr
                     key={field.id}
                     className="border-b align-top"
                   >
-                  
+
                     <td className="p-3">
                       <Input
                         {...register(`activities.${idx}.name`)}
@@ -172,13 +171,13 @@ export default function ActivitiesTable() {
                       )}
                     </td>
 
-                    
+
                     <td className="p-3">
                       <Textarea
                         {...register(
                           `activities.${idx}.description`
                         )}
-                        className="h-36"
+                        className="h-33"
                         placeholder="Describe the process..."
                       />
                       {descError && (
@@ -189,44 +188,30 @@ export default function ActivitiesTable() {
                     </td>
 
                     {/* Impacts */}
-                    <td className="p-3">
-                      <div className="flex flex-wrap gap-2 mb-2">
-                        {allImpactOptions.map((opt) => {
-                          const selected =
-                            activity.impacts?.includes(opt)
+                    <td className=" p-3">
+                      <CreatableSelect
+                        placeholder="Select or press Enter…"
+                        isMulti
+                        options={impactOptions}
+                        value={(activity.impacts || []).map(i => ({
+                          label: i,
+                          value: i
 
-                          return (
-                            <Button
-                              key={opt}
-                              type="button"
-                              variant= "options"
-                              className={`px-2 py-1 text-xs rounded-full ${
-                                selected
-                                  ? "bg-orange-500 text-white border-orange-500"
-                                  : "border-slate-300 text-slate-700"
-                              }`}
-                              onClick={() =>
-                                toggleImpact(idx, opt)
-                              }
-                            >
-                              {opt}
-                            </Button>
-                          )
-                        })}
-                      </div>
+                        }))}
+                        onChange={(selected) => {
+                          setValue(`activities.${idx}.impacts`, (selected || []).map(v => v.value))
 
-                      <Input
-                        placeholder="Add custom impact"
-                        className="text-xs mt-7"
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault()
-                            addCustomImpact(idx, e.target.value)
-                            e.target.value = ""
-                          }
+
                         }}
+
+                        menuPortalTarget={document.body}
+                        menuPosition="fixed"
+
                       />
                     </td>
+
+
+
 
                     {/* Impact description */}
                     <td className="p-3">
@@ -237,10 +222,13 @@ export default function ActivitiesTable() {
                         onChange={(e) =>
                           updateDescription(idx, e.target.value)
                         }
+                        
+
+                        
                       />
                     </td>
 
-                  
+
                     <td className="p-3 pt-5">
                       <button
                         className="inline-flex items-center justify-center p-2 cursor-pointer "

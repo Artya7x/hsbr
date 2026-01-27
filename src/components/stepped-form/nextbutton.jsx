@@ -9,7 +9,7 @@ export default function NextButton() {
       type={isLastStep ? "submit" : "button"}
       onClick={!isLastStep ? nextStep : undefined}
       variant="classic"
-      className="text-white  w-[300px] py-6"
+      className="text-white  w-[200px] py-6"
     >
       {isLastStep ? "Submit" : "Continue"}
     </Button>
