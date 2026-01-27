@@ -113,7 +113,7 @@ function MultiStepForm({ steps }) {
           <form onSubmit={methods.handleSubmit(submitSteppedForm)}>
 
             {currentStep.component}
-            <div className="flex mt-6 gap-4">
+            <div className="flex mt-6 gap-4 justify-end">
               <PrevButton />
               <NextButton />
             </div>
