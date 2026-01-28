@@ -95,11 +95,24 @@ export default function ActivitiesTable() {
   }
 
 
-  const [impactOptions, setImpactOptions] = useState( IMPACT_OPTIONS.map(i => ({ lable: i, value: i})))
+  function addImpactOptions(newInput){
+
+  const trimmedInput = newInput.trim();
+  
+  //Update Impact array for new values by the user 
+  
+  setImpactOptions( (prev) => {
+      
+    return prev.some( (i) => i.value === trimmedInput) ?  prev : [...prev, {label: trimmedInput, value: trimmedInput}]
+
+  })
+
+  }
+  const [impactOptions, setImpactOptions] = useState( IMPACT_OPTIONS.map(i => ({ label: i, value: i})))
 
   return (
     <Card className="border border-slate-200 shadow-sm">
-      {/* Header */}
+      
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-base font-medium ">
           Activities
@@ -109,7 +122,7 @@ export default function ActivitiesTable() {
         </Button>
       </CardHeader>
 
-      {/* Content */}
+      
       <CardContent className="pt-0">
         <div className="overflow-x-auto rounded-xl border border-border ">
           <table className="w-full text-sm">
@@ -171,7 +184,6 @@ export default function ActivitiesTable() {
                       )}
                     </td>
 
-
                     <td className="p-3">
                       <Textarea
                         {...register(
@@ -201,9 +213,13 @@ export default function ActivitiesTable() {
                         onChange={(selected) => {
                           setValue(`activities.${idx}.impacts`, (selected || []).map(v => v.value))
 
-
                         }}
+                         onCreateOption = {(inputValue)=> {
 
+                            addImpactOptions(inputValue)
+                            setValue(`activities.${idx}.impacts`, [...(activity.impacts || []), inputValue])
+                          }}
+                        
                         menuPortalTarget={document.body}
                         menuPosition="fixed"
 
@@ -222,9 +238,7 @@ export default function ActivitiesTable() {
                         onChange={(e) =>
                           updateDescription(idx, e.target.value)
                         }
-                        
-
-                        
+                                    
                       />
                     </td>
 
@@ -232,8 +246,7 @@ export default function ActivitiesTable() {
                     <td className="p-3 pt-5">
                       <button
                         className="inline-flex items-center justify-center p-2 cursor-pointer "
-                        onClick={() => remove(idx)}
-                      >
+                        onClick={() => remove(idx)}>
                         <Trash className="h-6 w-6 text-red-700 hover:text-red-900 " />
                       </button>
                     </td>

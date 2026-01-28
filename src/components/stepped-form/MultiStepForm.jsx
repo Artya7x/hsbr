@@ -41,7 +41,7 @@ function MultiStepForm({ steps }) {
             additionalResources: [],
             systems: [],
             physicalArchives: {
-              criticality: "critical" | "not_critical" | null,
+              criticality: "undefined",
               description: ""
             },
             fireproofCabinets: "",

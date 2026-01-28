@@ -8,7 +8,7 @@ import {
   CardContent,
 } from "../ui/card"
 
-
+import { Select } from "@/components/ui/select"
 import CreatableSelect from "react-select/creatable"
 
 export default function WorkEnvironmentTable() {
@@ -21,7 +21,7 @@ export default function WorkEnvironmentTable() {
 
   const activities = watch("activities") || []
 
-  
+
   const allResourceOptions = Array.from(
     new Set(
       activities.flatMap(
@@ -92,9 +92,15 @@ export default function WorkEnvironmentTable() {
 
                 const resources = activity.workEnvironment?.additionalResources || []
 
+                const criticality = watch(`activities.${idx}.workEnvironment.physicalArchives.criticality`)
+
+                console.log(
+   "criticality value:",
+  watch(`activities.${idx}.workEnvironment.physicalArchives.criticality`)
+)
                 return (
                   <tr key={idx} className="border-b align-top">
-                    
+
                     <td className="p-3 font-medium text-slate-700">
                       {activity.name || "—"}
                     </td>
@@ -131,12 +137,12 @@ export default function WorkEnvironmentTable() {
                         isMulti
                         placeholder="Select or press Enter…"
 
-                        
+
                         value={(activity.workEnvironment.additionalResources || []).map(
                           (r) => ({ label: r, value: r })
                         )}
 
-                  
+
                         options={allResourceOptions.map((r) => ({
                           label: r,
                           value: r,
@@ -177,12 +183,12 @@ export default function WorkEnvironmentTable() {
                         isMulti
                         placeholder="Select or press Enter…"
 
-                        
+
                         value={(activity.workEnvironment.systems || []).map(
                           (r) => ({ label: r, value: r })
                         )}
 
-                       
+
                         options={allSystemOptions.map((r) => ({
                           label: r,
                           value: r,
@@ -220,7 +226,7 @@ export default function WorkEnvironmentTable() {
 
                     <td className="p-3">
                       <div className="flex items-center gap-2">
-                       
+
                         <Input
                           {...register(
                             `activities.${idx}.workEnvironment.physicalArchives.description`
@@ -229,18 +235,30 @@ export default function WorkEnvironmentTable() {
                           className="h-10"
                         />
                         <select
+
+                         
                           {...register(
                             `activities.${idx}.workEnvironment.physicalArchives.criticality`
                           )}
-                          className="h-10 rounded-md border border-input px-2 text-sm"
-                        >
-                          <option value="">Select</option>
-                          <option value="critical">Critical</option>
-                          <option value="not_critical">Not critical</option>
+                          className={`h-10 rounded-md border px-2 text-sm
+                            ${criticality === "critical"
+                              ? "bg-red-200 text-red-900"
+                              : criticality === "not_critical"
+                                ? "bg-green-200 text-green-900" 
+                                : "bg-white text-black"
+                            }
+                            `}>     
+          
+                            
+                          <option value = "undefined"  disabled className = "bg-white text-black">Select </option>
+                          <option value="critical" className = "bg-red-200 text-red-900" >Critical</option>
+                          <option value="not_critical" className = "bg-green-200 text-green-900">Not critical</option>
+                               
+  
                         </select>
                       </div>
                     </td>
-
+                            
                     <td className="p-3">
                       <Input
                         {...register(
