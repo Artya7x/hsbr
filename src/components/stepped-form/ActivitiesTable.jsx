@@ -15,7 +15,6 @@ import { TIME_INTERVALS } from "../shared/timePeriod"
 import {useState} from "react";
 import CreatableSelect from "react-select/creatable"
 
-
 const IMPACT_OPTIONS = [
   "High energy usage",
   "Privacy risk",
@@ -162,14 +161,13 @@ export default function ActivitiesTable() {
                   errors?.activities?.[idx]?.name?.message
                 const descError =
                   errors?.activities?.[idx]?.description?.message
-
+                const impact = errors?.activities?.[idx]?.impacts?.message
+                const impactDescription = errors?.activities?.[idx]?.impactDescription?.message 
                
-
                 return (
                   <tr
                     key={field.id}
-                    className="border-b align-top"
-                  >
+                    className="border-b align-top">
 
                     <td className="p-3">
                       <Input
@@ -224,6 +222,11 @@ export default function ActivitiesTable() {
                         menuPosition="fixed"
 
                       />
+                      {impact && (
+                        <p className="mt-1 text-xs text-red-600">
+                          {impact}
+                        </p>
+                      )}
                     </td>
 
 
@@ -240,6 +243,12 @@ export default function ActivitiesTable() {
                         }
                                     
                       />
+
+                        {impactDescription && (
+                        <p className="mt-1 text-xs text-red-600">
+                          {impactDescription}
+                        </p>
+                      )}
                     </td>
 
 

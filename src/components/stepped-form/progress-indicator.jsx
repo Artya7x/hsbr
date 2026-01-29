@@ -2,10 +2,15 @@ import { Check } from "lucide-react"
 import { motion } from "framer-motion"
 import { useMultiStepForm } from "../../hooks/use-stepped-form"
 import { checkoutSteps } from "@/pages/public/survey/survey"
+import { useFormContext } from "react-hook-form"
 
 export default function ProgressIndicator() {
   const { currentStep, goToStep, currentStepIndex } = useMultiStepForm()
+  const {
+    formState: { errors },
+  } = useFormContext()
 
+  const hasStep1Errors = errors?.activities ? true : false
   return (
     <div className="flex items-center w-full justify-center ">
       <div className="w-full space-y-4">
@@ -16,9 +21,8 @@ export default function ProgressIndicator() {
               className="h-full bg-black"
               initial={{ width: "0%" }}
               animate={{
-                width: `${
-                  (currentStepIndex / (checkoutSteps.length - 1)) * 100
-                }%`,
+                width: `${(currentStepIndex / (checkoutSteps.length - 1)) * 100
+                  }%`,
               }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
@@ -26,18 +30,34 @@ export default function ProgressIndicator() {
 
           {/* Steps */}
           {checkoutSteps.map((step) => {
+            const targetIndex = step.position - 1
             const isCompleted = currentStepIndex > step.position - 1
             const isCurrent = currentStepIndex === step.position - 1
+            const isBlocked = targetIndex > currentStepIndex && currentStepIndex === 0 && hasStep1Errors
+            const isFirstStep = targetIndex > currentStepIndex && currentStepIndex === 0
 
             return (
               <div key={step.position} className="relative z-10">
                 <motion.button
-                  onClick={() => goToStep(step.position)}
-                  className={`flex size-10 items-center justify-center rounded-full border-2 ${
-                    isCompleted || isCurrent
-                      ? "border-[oklch(0.28_0.07_255)] bg-[oklch(0.28_0.07_255)] text-white"
-                      : "border-gray-200 bg-white text-gray-400"
-                  }`}
+                  onClick={() => {
+
+                    if (targetIndex <= currentStepIndex) {
+                      goToStep(step.position)
+                      return
+                    }
+
+                    if (currentStepIndex === 0) {
+                      return
+                    }
+
+                    goToStep(step.position)
+                  }}
+                  className={`flex size-10 items-center justify-center rounded-full border-2  
+                    ${isBlocked || isFirstStep ? "cursor-not-allowed opacity-80 " : "cursor-pointer"}
+                    ${isCompleted || isCurrent
+                      ? "border-[oklch(0.28_0.07_255)] bg-[oklch(0.28_0.07_255)] text-white "
+                      : "border-gray-200 bg-white text-gray-400 "
+                    }`}
                   initial={false}
                   animate={{
                     scale: isCurrent ? 1.1 : 1,
@@ -52,13 +72,12 @@ export default function ProgressIndicator() {
                 </motion.button>
 
                 <div
-                  className={`absolute left-1/2 mt-2 -translate-x-1/2 text-sm font-medium ${
-                    isCompleted || isCurrent
-                      ? "text-black"
-                      : "text-gray-500"
-                  }`}
+                  className={`absolute left-1/2 mt-2 -translate-x-1/2 text-sm font-medium ${isCompleted || isCurrent
+                    ? "text-black"
+                    : "text-gray-500"
+                    }`}
                 >
-                 
+
                 </div>
               </div>
             )

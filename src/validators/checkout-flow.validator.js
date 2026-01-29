@@ -1,33 +1,105 @@
+
 import { z } from "zod"
+import { Step1Validator } from "./step1Validator"
+export const step2Validator = z.object({
+  impactMatrix: z.array(
+    z.object({
+      intervalId: z.string(),
+      severity: z.string().min(1, "Severity is required"),
+    })
+  ),
 
-export const activityBaseSchema = z.object({
-  name: z.string().trim().min(1, "Activity name is required"),
-  description: z.string().trim().min(1, "Process description is required"),
-  impacts: z.array(z.string()).default([]),
-  impactDescription: z.string().trim().optional(),
+  recovery: z.object({
+    rtoHours: z.number().nullable().refine((v) => v !== null && v >= 1, {
+      message: "RTO is required",
+    }),
+    mtpdHours: z.number().nullable().refine((v) => v !== null && v >= 1, {
+      message: "MTPD is required",
+    }),
+
+    rpo: z
+      .enum(["backup", "mirroring", "replication"])
+      .nullable()
+      .refine((v) => v !== null, {
+        message: "RPO is required",
+      })
+    ,
+
+    rpoDetails: z.object({
+      frequency: z.number().int().positive().nullable(),
+      duration: z.number().int().positive().nullable(),
+    }),
+  })
+    .superRefine((recovery, ctx) => {
+      if (recovery.rpo === "replication") {
+        if (recovery.rpoDetails.frequency == null) {
+          ctx.addIssue({
+            path: ["rpoDetails", "frequency"],
+            message: "Frequency is required",
+          })
+        }
+
+        if (recovery.rpoDetails.duration == null) {
+          ctx.addIssue({
+            path: ["rpoDetails", "duration"],
+            message: "Duration is required",
+          })
+        }
+      }
+    }),
 })
 
-export const impactMatrixItemSchema = z.object({
-  intervalId: z.string(),
-  severity: z.number().nullable(), 
+export const step3Validator = z.object({
+
+  dependsOn: z.number({ required_error: "Please select an activity", invalid_type_error: "Please select an activity" }),
+  requiredBy: z.number({ required_error: "Please select an activity", invalid_type_error: "Please select an activity" })
+
 })
 
-export const recoverySchema = z.object({
-  rtoHours: z.number().nullable(),
-  mtpdHours: z.number().nullable(),
-  rpo: z.enum(["backup", "mirroring", "replication"]).nullable(),
+export const step4Validator = z.object({
+  workEnvironment: z.object({
+    staffingLevel: z.number().min(1, "Staffing level is required"),
+    workstations: z.number().min(1, "Workstations is required "),
+    additionalResources: z.array(z.string()),
+    systems: z.array(z.string()),
+    physicalArchives: z.object({
+      criticality: z.string().optional(),
+      description: z.string().optional(),
+    }).superRefine((data, ctx) => {
 
-  rpoDetails: z.object({
-    frequency: z.string(),
-    duration: z.string(),
+      if (data.criticality && !data.description) {
+        ctx.addIssue({
+          path: ["description"],
+          message: "Physical Archives is required"
+        })
+      }
+
+    }),
+    fireproofCabinets: z.string().optional(),
   }),
+
 })
 
-export const fullActivitySchema = activityBaseSchema.extend({
-  impactMatrix: z.array(impactMatrixItemSchema),
-  recovery: recoverySchema,
+export const Step5Validator = z.object({
+
+  externalDependencies: z.array(
+    z.object({
+      activityIndex: z.number(),
+      companyName: z.string().min(1, "Company Name is required"),
+      email: z.string().email("Invalid email address"),
+      phone: z.string().min(1, "Phone is required"),
+      resources: z.array(z.string()).min(1, "At least one resource is required"),
+    })
+  ),
+
 })
 
-export const checkoutSchema = z.object({
-  activities: z.array(fullActivitySchema).min(1),
+export const Schema = z.object({
+  activities: z.array(
+    Step1Validator
+      .merge(step2Validator)
+      .merge(step3Validator)
+      .merge(step4Validator)
+      .merge(Step5Validator)
+  ),
 })

@@ -1,8 +1,8 @@
 import { createContext, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-
-import { checkoutSchema } from "@/validators/checkout-flow.validator"
+import { Step1Validator } from "@/validators/step1Validator"
+import { Schema } from "@/validators/checkout-flow.validator"
 
 import PrevButton from "./prevbutton"
 import NextButton from "./nextbutton"
@@ -14,7 +14,7 @@ export const MultiStepFormContext = createContext(null)
 function MultiStepForm({ steps }) {
 
   const methods = useForm({
-    resolver: zodResolver(checkoutSchema),
+    resolver: zodResolver(Schema),
     defaultValues: {
       activities: [
         {
@@ -23,7 +23,7 @@ function MultiStepForm({ steps }) {
           requiredBy: null,
           impactMatrix: TIME_INTERVALS.map((interval) => ({
             intervalId: interval.id,
-            severity: null,
+            severity: "",
           })),
 
           recovery: {
@@ -31,8 +31,8 @@ function MultiStepForm({ steps }) {
             mtpdHours: null,
             rpo: null,
             rpoDetails: {
-              frequency: "",
-              duration: "",
+              frequency: null,
+              duration: null,
             },
           },
           workEnvironment: {
@@ -41,7 +41,7 @@ function MultiStepForm({ steps }) {
             additionalResources: [],
             systems: [],
             physicalArchives: {
-              criticality: "undefined",
+              criticality: "",
               description: ""
             },
             fireproofCabinets: "",
@@ -66,9 +66,29 @@ function MultiStepForm({ steps }) {
   const currentStep = steps[currentStepIndex]
 
   async function nextStep() {
-    const isValid = await methods.trigger(currentStep.fields)
-    if (!isValid)
-      return
+
+    methods.clearErrors("activities")
+
+    const activities = methods.getValues("activities")
+
+    for (let i = 0; i < activities.length; i++) {
+
+      let result = Step1Validator.safeParse(activities[i])
+
+      if (!result.success) {
+
+        result.error.issues.forEach((iss) => {
+
+          const fieldPath = `activities.${i}.${iss.path.join(".")}`
+
+
+          methods.setError(fieldPath, { type: "manual", message: iss.message })
+
+        })
+        return
+      }
+
+    }
 
     if (currentStepIndex < steps.length - 1) {
       setCurrentStepIndex((i) => i + 1)

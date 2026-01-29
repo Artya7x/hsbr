@@ -13,34 +13,34 @@ import MultiStepForm from "../../../components/stepped-form/MultiStepForm"
 
 export const checkoutSteps = [
   {
-    title: "Step 1: Business Impact Analysis",
+    title: "Step 1: Activities",
     component: <Step1 />,
     position: 1,
-    fields: ["activities"],
+    fieldsPaths: ["activities.name", "activities.description", "activities.impacts"],
   },
   {
-    title: "Step 2: Business Impact Analysis",
+    title: "Step 2: Impact Severity",
     component: <Step2 />,
     position: 2,
-    fields: ["activities"],
+    fieldsPaths: ["activities.impactMatrix", "activities.recovery"],
   },
   {
-    title: "Step 2: Business Impact Analysis",
+    title: "Step 3: Activity Dependencies",
     component: <Step3 />,
     position: 3,
-    fields: ["activities"],
+    fieldsPaths: ["activities.dependsOn", "activities.requiredBy"],
   },
    {
-    title: "Step 2: Business Impact Analysis",
+    title: "Step 4: Work Environment requirements ",
     component: <Step4 />,
     position: 4,
-    fields: ["activities"],
+    fieldsPaths: ["activities.workEnvironment"],
   },
   {
-    title: "Step 2: Business Impact Analysis",
+    title: "Step 5: External Dependencies",
     component: <Step5 />,
     position: 5,
-    fields: ["activities"],
+    fields: ["activities.externalDependencies"],
   },
 
 ]
