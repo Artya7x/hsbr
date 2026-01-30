@@ -50,16 +50,31 @@ export const step2Validator = z.object({
 })
 
 export const step3Validator = z.object({
+  dependsOn: z
+    .number()
+    .optional()
+    .refine((v) => v !== undefined, {
+      message: "Please select an activity",
+    }),
 
-  dependsOn: z.number({ required_error: "Please select an activity", invalid_type_error: "Please select an activity" }),
-  requiredBy: z.number({ required_error: "Please select an activity", invalid_type_error: "Please select an activity" })
-
+  requiredBy: z
+    .number()
+    .optional()
+    .refine((v) => v !== undefined, {
+      message: "Please select an activity",
+    }),
 })
+
+
 
 export const step4Validator = z.object({
   workEnvironment: z.object({
-    staffingLevel: z.number().min(1, "Staffing level is required"),
-    workstations: z.number().min(1, "Workstations is required "),
+     staffingLevel: z.number().nullable().refine((v) => v !== null && v >= 1, {
+        message: "Staffing level is required",
+      }),
+     workstations: z.number().nullable().refine((v) => v !== null && v >= 1, {
+        message: "Workstations is required",
+      }),
     additionalResources: z.array(z.string()),
     systems: z.array(z.string()),
     physicalArchives: z.object({
@@ -84,9 +99,14 @@ export const Step5Validator = z.object({
 
   externalDependencies: z.array(
     z.object({
-      activityIndex: z.number(),
-      companyName: z.string().min(1, "Company Name is required"),
-      email: z.string().email("Invalid email address"),
+      activityIndex: z
+        .number()
+        .nullable()
+        .refine((v) => v !== null, {
+          message: "Activity is required",
+        }),
+      companyName: z.string().trim().min(1, "Company Name is required"),
+      email: z.string().trim().email("Invalid email address"),
       phone: z.string().min(1, "Phone is required"),
       resources: z.array(z.string()).min(1, "At least one resource is required"),
     })
@@ -100,6 +120,6 @@ export const Schema = z.object({
       .merge(step2Validator)
       .merge(step3Validator)
       .merge(step4Validator)
-      .merge(Step5Validator)
+      
   ),
 })

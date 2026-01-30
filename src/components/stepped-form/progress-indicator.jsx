@@ -4,13 +4,15 @@ import { useMultiStepForm } from "../../hooks/use-stepped-form"
 import { checkoutSteps } from "@/pages/public/survey/survey"
 import { useFormContext } from "react-hook-form"
 
-export default function ProgressIndicator() {
+export default function ProgressIndicator({ errorSteps }) {
   const { currentStep, goToStep, currentStepIndex } = useMultiStepForm()
   const {
     formState: { errors },
   } = useFormContext()
 
   const hasStep1Errors = errors?.activities ? true : false
+
+
   return (
     <div className="flex items-center w-full justify-center ">
       <div className="w-full space-y-4">
@@ -35,7 +37,7 @@ export default function ProgressIndicator() {
             const isCurrent = currentStepIndex === step.position - 1
             const isBlocked = targetIndex > currentStepIndex && currentStepIndex === 0 && hasStep1Errors
             const isFirstStep = targetIndex > currentStepIndex && currentStepIndex === 0
-
+            const hasError = errorSteps?.has(step.position)
             return (
               <div key={step.position} className="relative z-10">
                 <motion.button
@@ -52,30 +54,40 @@ export default function ProgressIndicator() {
 
                     goToStep(step.position)
                   }}
-                  className={`flex size-10 items-center justify-center rounded-full border-2  
-                    ${isBlocked || isFirstStep ? "cursor-not-allowed opacity-80 " : "cursor-pointer"}
-                    ${isCompleted || isCurrent
-                      ? "border-[oklch(0.28_0.07_255)] bg-[oklch(0.28_0.07_255)] text-white "
-                      : "border-gray-200 bg-white text-gray-400 "
-                    }`}
+                  className={`flex size-10 items-center justify-center rounded-full border-2
+  ${isBlocked || isFirstStep ? "cursor-not-allowed opacity-80" : "cursor-pointer"}
+  ${hasError
+                      ? "border-red-500 bg-red-200 text-red-700"
+                      : isCompleted || isCurrent
+                        ? "border-[oklch(0.28_0.07_255)] bg-[oklch(0.28_0.07_255)] text-white"
+                        : "border-gray-200 bg-white text-gray-400"
+                    }
+`}
+
                   initial={false}
                   animate={{
                     scale: isCurrent ? 1.1 : 1,
                     transition: { type: "spring", stiffness: 500, damping: 30 },
                   }}
                 >
-                  {isCompleted ? (
+                  {isCompleted && !hasError ? (
                     <Check className="h-6 w-6" />
                   ) : (
                     <h1>{step.position}</h1>
                   )}
+
                 </motion.button>
 
                 <div
-                  className={`absolute left-1/2 mt-2 -translate-x-1/2 text-sm font-medium ${isCompleted || isCurrent
-                    ? "text-black"
-                    : "text-gray-500"
-                    }`}
+                  className={`absolute left-1/2 mt-2 -translate-x-1/2 text-sm font-medium
+  ${hasError
+                      ? "text-red-600"
+                      : isCompleted || isCurrent
+                        ? "text-black"
+                        : "text-gray-500"
+                    }
+`}
+
                 >
 
                 </div>

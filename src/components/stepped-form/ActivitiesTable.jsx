@@ -48,15 +48,15 @@ export default function ActivitiesTable() {
       impactDescription: "",
       impactMatrix: TIME_INTERVALS.map((interval) => ({
         intervalId: interval.id,
-        severity: null,
+        severity: "",
       })),
       recovery: {
         rtoHours: null,
         mtpdHours: null,
         rpo: null,
         rpoDetails: {
-          frequency: "",
-          duration: "",
+          frequency: null,
+          duration: null,
         },
       },
     })

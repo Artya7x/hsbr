@@ -3,7 +3,7 @@ import { useFormContext, useFieldArray } from "react-hook-form"
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card"
 
 export default function ActivitiesDependencies() {
-  const { control, register, watch } = useFormContext()
+  const { control, register, watch, formState: { errors } } = useFormContext()
 
   const { fields } = useFieldArray({
     control,
@@ -31,50 +31,63 @@ export default function ActivitiesDependencies() {
             </thead>
 
             <tbody>
-              {fields.map((field, idx) => (
-                <tr
-                  key={field.id}
-                  className="align-top border-b border-border/40 last:border-b-0"
-                >
-                  <td className="px-6 py-3 font-medium text-slate-700">
-                    {activities[idx]?.name || " No activity name"}
-                  </td>
+              {fields.map((field, idx) => {
+                const dependsOnError = errors?.activities?.[idx]?.dependsOn?.message
+                const requiredByError = errors?.activities?.[idx]?.requiredBy?.message
+                return (
+                  <tr
+                    key={field.id}
+                    className="align-top border-b border-border/40 last:border-b-0"
+                  >
+                    <td className="px-6 py-3 font-medium text-slate-700">
+                      {activities[idx]?.name || " No activity name"}
+                    </td>
 
-                  <td className="px-6 py-3">
-                    <select
-                      {...register(`activities.${idx}.dependsOn`)}
-                      className="w-full rounded-md border border-border bg-white px-2 py-2 text-sm focus:ring-2 focus:ring-ring"
-                    >
-                      <option value="">Select...</option>
+                    <td className="px-6 py-3">
+                      <select
+                        {...register(`activities.${idx}.dependsOn`, { setValueAs: (v) => (v === "" ? undefined : Number(v)), })}
+                        className={`w-full rounded-md border border-border bg-white px-2 py-2 text-sm focus:ring-2 focus:ring-ring ${dependsOnError ? "border-red-500" : ""}`}
+                      >
+                        <option value="">Select...</option>
 
-                      {fields.map((_, activityIndex) =>
-                        activityIndex !== idx ? (
-                          <option key={fields[activityIndex].id} value={activityIndex}>
-                            {activities[activityIndex]?.name || `Activity ${activityIndex + 1}`}
-                          </option>
-                        ) : null
-                      )}
-                    </select>
-                  </td>
+                        {fields.map((_, activityIndex) =>
+                          activityIndex !== idx ? (
+                            <option key={fields[activityIndex].id} value={activityIndex}>
+                              {activities[activityIndex]?.name || `Activity ${activityIndex + 1}`}
+                            </option>
+                          ) : null
+                        )}
+                      </select>
+                      {dependsOnError && (
+                        <p className="mt-1 text-xs text-red-500">
+                          {dependsOnError}
+                        </p>)}
 
-                  <td className="px-6 py-3">
-                    <select
-                      {...register(`activities.${idx}.requiredBy`)}
-                      className="w-full rounded-md border border-border bg-white px-2 py-2 text-sm focus:ring-2 focus:ring-ring"
-                    >
-                      <option value="">Select...</option>
+                    </td>
 
-                      {fields.map((_, activityIndex) =>
-                        activityIndex !== idx ? (
-                          <option key={fields[activityIndex].id} value={activityIndex}>
-                            {activities[activityIndex]?.name || `Activity ${activityIndex + 1}`}
-                          </option>
-                        ) : null
-                      )}
-                    </select>
-                  </td>
-                </tr>
-              ))}
+                    <td className="px-6 py-3">
+                      <select
+                        {...register(`activities.${idx}.requiredBy`, { setValueAs: (v) => (v === "" ? undefined : Number(v)), })}
+                        className={`w-full rounded-md border border-border bg-white px-2 py-2 text-sm focus:ring-2 focus:ring-ring ${requiredByError ? "border-red-500" : ""}`}
+                      >
+                        <option value="">Select...</option>
+
+                        {fields.map((_, activityIndex) =>
+                          activityIndex !== idx ? (
+                            <option key={fields[activityIndex].id} value={activityIndex}>
+                              {activities[activityIndex]?.name || `Activity ${activityIndex + 1}`}
+                            </option>
+                          ) : null
+                        )}
+                      </select>
+                      {requiredByError && (
+                        <p className="mt-1 text-xs text-red-500">
+                          {requiredByError}
+                        </p>)}
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>

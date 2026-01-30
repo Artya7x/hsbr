@@ -88,34 +88,34 @@ export default function WorkEnvironmentTable() {
               )}
 
               {activities.map((activity, idx) => {
-                const envErrors = errors?.activities?.[idx]?.workEnvironment
-
+                const stafLevelerror =   errors?.activities?.[idx]?.workEnvironment?.staffingLevel?.message
+                const workstationError = errors?.activities?.[idx]?.workEnvironment?.workstations?.message
+                const physicalInvError = errors?.activities?.[idx]?.workEnvironment?.physicalArchives?.description?.message
+                const criticalityError = errors?.activities?.[idx]?.workEnvironment?.physicalArchives?.criticality?.message
                 const resources = activity.workEnvironment?.additionalResources || []
 
                 const criticality = watch(`activities.${idx}.workEnvironment.physicalArchives.criticality`)
 
-                console.log(
-   "criticality value:",
-  watch(`activities.${idx}.workEnvironment.physicalArchives.criticality`)
-)
+                
                 return (
                   <tr key={idx} className="border-b align-top">
 
                     <td className="p-3 font-medium text-slate-700">
-                      {activity.name || "—"}
+                      {activity.name || ""}
                     </td>
 
                     <td className="p-3">
                       <Input
+                      type = "number"
                         {...register(
-                          `activities.${idx}.workEnvironment.staffingLevel`
+                          `activities.${idx}.workEnvironment.staffingLevel`,  {  setValueAs: (v) => (v === "" ? null : Number(v)), }
                         )}
                         placeholder="e.g. 3"
-                        className="h-10"
+                        className={`h-10 border ${stafLevelerror ? "border-red-500" : "border-border"}`}
                       />
-                      {envErrors?.staffingLevel && (
+                      {stafLevelerror && (
                         <p className="mt-1 text-xs text-red-600">
-                          {envErrors.staffingLevel.message}
+                          {stafLevelerror}
                         </p>
                       )}
                     </td>
@@ -124,11 +124,16 @@ export default function WorkEnvironmentTable() {
                       <Input
                         type="number"
                         min={0}
-                        {...register(`activities.${idx}.workEnvironment.workstations`, { valueAsNumber: true }
+                        {...register(`activities.${idx}.workEnvironment.workstations`, {  setValueAs: (v) => (v === "" ? null : Number(v)), }
                         )}
                         placeholder="e.g. 3"
-                        className="h-10"
+                        className={`h-10 border ${workstationError ? "border-red-500" : "border-border"}`}
                       />
+                        {workstationError && (
+                        <p className="mt-1 text-xs text-red-600">
+                          {workstationError}
+                        </p>
+                      )}
                     </td>
 
 
@@ -232,8 +237,10 @@ export default function WorkEnvironmentTable() {
                             `activities.${idx}.workEnvironment.physicalArchives.description`
                           )}
                           placeholder="e.g., invoice"
-                          className="h-10"
+                          className={`h-10 border ${physicalInvError ? "border-red-500" : "border-border"}`}
                         />
+
+                       
                         <select
 
                          
@@ -247,16 +254,26 @@ export default function WorkEnvironmentTable() {
                                 ? "bg-green-200 text-green-900" 
                                 : "bg-white text-black"
                             }
-                            `}>     
+                            ${criticalityError ? "border-red-500" : ""}`}>     
           
                             
-                          <option value = "undefined"  disabled className = "bg-white text-black">Select </option>
+                          <option value = ""  disabled className = "bg-white text-black">Select </option>
                           <option value="critical" className = "bg-red-200 text-red-900" >Critical</option>
                           <option value="not_critical" className = "bg-green-200 text-green-900">Not critical</option>
                                
   
                         </select>
                       </div>
+                       {physicalInvError && (
+                        <p className="mt-1 text-xs text-red-600">
+                          {physicalInvError}
+                        </p>
+                      )}
+                      {criticalityError && (
+                        <p className="mt-1 text-xs text-red-600">
+                          {physicalInvError}
+                        </p>
+                      )}
                     </td>
                             
                     <td className="p-3">

@@ -19,7 +19,7 @@ export const checkoutSteps = [
     fieldsPaths: ["activities.name", "activities.description", "activities.impacts"],
   },
   {
-    title: "Step 2: Impact Severity",
+    title: "Step 2: Impact Severity and Recovery",
     component: <Step2 />,
     position: 2,
     fieldsPaths: ["activities.impactMatrix", "activities.recovery"],
@@ -40,7 +40,7 @@ export const checkoutSteps = [
     title: "Step 5: External Dependencies",
     component: <Step5 />,
     position: 5,
-    fields: ["activities.externalDependencies"],
+    fieldsPaths: ["activities.externalDependencies"],
   },
 
 ]

@@ -19,8 +19,8 @@ function MultiStepForm({ steps }) {
       activities: [
         {
           name: "", description: "", impacts: [], impactDescription: "",
-          dependsOn: null,
-          requiredBy: null,
+          dependsOn: undefined,
+          requiredBy: undefined,
           impactMatrix: TIME_INTERVALS.map((interval) => ({
             intervalId: interval.id,
             severity: "",
@@ -36,8 +36,8 @@ function MultiStepForm({ steps }) {
             },
           },
           workEnvironment: {
-            staffingLevel: 0,
-            workstations: 0,
+            staffingLevel: null,
+            workstations: null,
             additionalResources: [],
             systems: [],
             physicalArchives: {
@@ -48,7 +48,7 @@ function MultiStepForm({ steps }) {
           },
           externalDependencies: [
             {
-              activityIndex: 0,
+              activityIndex: null,
               companyName: "",
               email: "",
               phone: "",
@@ -64,6 +64,8 @@ function MultiStepForm({ steps }) {
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
   const currentStep = steps[currentStepIndex]
+
+  const [submitErrors, setSubmitErrors] = useState(null)
 
   async function nextStep() {
 
@@ -107,10 +109,46 @@ function MultiStepForm({ steps }) {
     }
   }
 
-  function submitSteppedForm(data) {
-    console.log("Final form data:", data)
+function submitSteppedForm(data) {
+  setSubmitErrors(null)
+  console.log("Final form data:", data)
+}
+
+
+  //Functions for errors 
+
+function hasNestedError(errors, path) {
+  const keys = path.split(".")
+
+  function walk(current, index) {
+    if (!current) return false
+    if (index === keys.length) return true
+
+    const key = keys[index]
+
+    if (Array.isArray(current)) {
+      return current.some((item) => walk(item, index))
+    }
+
+    return walk(current[key], index + 1)
   }
 
+  return walk(errors, 0)
+}
+
+function getStepsWithErrors(errors, steps) {
+  if (!errors) return []
+
+  return steps.filter((step) =>
+    step.fieldsPaths?.some((path) => hasNestedError(errors, path))
+  )
+}
+
+const errorStepPositions = new Set(
+  submitErrors ? getStepsWithErrors(submitErrors, steps).map((s) => s.position) : []
+)
+
+  
   const value = {
     currentStep,
     currentStepIndex,
@@ -122,15 +160,44 @@ function MultiStepForm({ steps }) {
     steps,
   }
 
+
+
+
   return (
 
     <MultiStepFormContext.Provider value={value}>
       <FormProvider {...methods}>
         <div className="mx-auto w-full max-w-[1600px] px-8 ">
           <div className="bg-card rounded-xl border p-5 mb-4 mt-7">
-            <ProgressIndicator />
+            <ProgressIndicator errorSteps = {errorStepPositions} />
           </div>
-          <form onSubmit={methods.handleSubmit(submitSteppedForm)}>
+          <form
+            onSubmit={methods.handleSubmit(
+              submitSteppedForm,
+              (errors) => setSubmitErrors(errors)
+            )}
+          >
+            {submitErrors && (
+              <div className="mb-4 rounded-lg border border-red-300 bg-red-50 p-4">
+                <p className="font-medium text-red-800">
+                  Please fix the following steps before submitting the form:
+                </p>
+
+                <ul className="mt-2 list-disc pl-5 text-sm text-red-700">
+                  {getStepsWithErrors(submitErrors, steps).map((step) => (
+                    <li key={step.position}>
+                      <button
+                        type="button"
+                        onClick={() => goToStep(step.position)}
+                        className="underline hover:text-red-900 cursor-pointer"
+                      >
+                        {step.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {currentStep.component}
             <div className="flex mt-6 gap-4 justify-end">

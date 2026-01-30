@@ -4,10 +4,7 @@ import { FaEye } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 export const columns = [
-   {
-    accessorKey: "logo",
-    header: "Logo",
-  },
+  
   {
     accessorKey: "organization",
     header: "Organization",

@@ -15,7 +15,8 @@ import {
   IconFileWord,
   IconHome,
   IconUsersGroup, 
-  IconFileSpreadsheet 
+  IconFileSpreadsheet,
+  IconVectorBezierCircle 
 } from "@tabler/icons-react";
 
 import {
@@ -27,6 +28,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { NavLink } from "react-router-dom"
 
 
 import { Button } from "@/components/ui/button";
@@ -44,8 +46,8 @@ export default function AppSidebar(props) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">My Dashboard</span>
+                <IconVectorBezierCircle className="!size-6" />
+                <span className="text-base text-xl font-semibold">HSBR</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -69,19 +71,21 @@ export default function AppSidebar(props) {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="#">
+              <NavLink to = "/">
+              
                 <IconUsersGroup  className="!size-5" />
                 <span>Organizations</span>
-              </a>
+             
+              </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="#">
+              <NavLink to = "/createForm">
                 <IconFileSpreadsheet className="!size-5" />
                 <span>Survays</span>
-              </a>
+              </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
        

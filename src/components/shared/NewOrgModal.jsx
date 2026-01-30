@@ -28,7 +28,7 @@ export default function NewOrgModal() {
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <Button className="mr-1 cursor-pointer">Add Organization </Button>
+          <Button type = "button" variant="classic" >Add Organization </Button>
         </DialogTrigger>
         <DialogContent  className="sm:max-w-[450px] animate-none">
           <DialogHeader>
@@ -37,7 +37,7 @@ export default function NewOrgModal() {
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="organization name">Organization Name <span className="text-destructive">*</span> </Label>
-              <Input id="organization name" name="organization name" placeholder="eg. Kokos LTD" />
+              <Input id="organization name" name="organization name" placeholder="eg. Ex LTD" />
             </div>
             <div className="grid gap-3">
               <Label htmlFor="phone">Phone <span className="text-destructive">*</span></Label>
@@ -53,7 +53,7 @@ export default function NewOrgModal() {
             <DialogClose asChild>
               <Button variant="outline cursor-pointer">Cancel</Button>
             </DialogClose>
-            <Button type="submit cursor-pointer">Save changes</Button>
+            <Button variant = "classic" type="submit cursor-pointer">Save changes</Button>
           </DialogFooter>
 
         </DialogContent>

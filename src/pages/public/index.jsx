@@ -5,6 +5,8 @@ import DashboardLayout from "@/components/layout/DashBoardLayout";
 import logo from "../../assets/react.svg";
 import DataTable from "@/components/ui/DataTable";
 import NewOrgModal from "@/components/shared/NewOrgModal";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+
 
 export default function IndexPage() {
 
@@ -16,18 +18,18 @@ useEffect(() => {
 
         {
             id: 1,
-            logo: logo,
-            organization: "Orginization",
+          
+            organization: "Org1",
 
-            manager_name: "Panagiotis",
-            phone: 99178002,
+            manager_name: "Marios",
+            phone: 99027659,
     },
        {
         id: 2,
-        logo: logo,
-        organization: "sdf",
        
-        manager_name: "Panagiotis",
+        organization: "Org2",
+       
+        manager_name: "Andreas",
         phone: 99178002,
     }
 
@@ -39,7 +41,7 @@ useEffect(() => {
 
         <DashboardLayout>
             <div className = "flex pt-5 pl-6  text-lg font-semibold">Organization</div>
-            <div className = "flex-1 p-6 pt-1 space-y-6">    
+            <div className = "flex-1 p-6 pt-1 space-y-6">   
                 <DataTable columns={columns} data={data} toolbarAction = {<NewOrgModal />}> </DataTable>
             </div>
         </DashboardLayout>
