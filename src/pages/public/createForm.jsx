@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { useForm, FormProvider } from "react-hook-form"
 import CreatableSelect from "react-select/creatable"
 import { Controller } from "react-hook-form"
+import { NavLink } from "react-router-dom"
 
 export default function CreateDocumentPage() {
     const methods = useForm({
@@ -104,24 +105,24 @@ export default function CreateDocumentPage() {
 
                                         {/* From interval */}
                                         <div className="grid gap-1.5 w-full max-w-xs">
-  <Label>Time Intervals</Label>
+                                            <Label>Time Intervals</Label>
 
-  <Controller
-    name="timeColumns"
-    control={control}
-    render={({ field }) => (
-      <CreatableSelect
-        isMulti
-        placeholder="Type a value and press Enter"
-        value={field.value.map(v => ({ label: v, value: v }))}
-        onChange={(newValue) =>
-          field.onChange(newValue.map(v => v.value))
-        }
-        classNamePrefix="react-select"
-      />
-    )}
-  />
-</div>
+                                            <Controller
+                                                name="timeColumns"
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <CreatableSelect
+                                                        isMulti
+                                                        placeholder="Type a value and press Enter"
+                                                        value={field.value.map(v => ({ label: v, value: v }))}
+                                                        onChange={(newValue) =>
+                                                            field.onChange(newValue.map(v => v.value))
+                                                        }
+                                                        classNamePrefix="react-select"
+                                                    />
+                                                )}
+                                            />
+                                        </div>
 
                                     </div>
 
@@ -131,8 +132,9 @@ export default function CreateDocumentPage() {
 
                                 {/* Actions */}
                                 <div className="flex justify-end gap-3">
-                                    <Button variant="outline">Cancel</Button>
+                                     <NavLink to="/survey">
                                     <Button variant="classic">Create</Button>
+                                    </NavLink>
                                 </div>
                             </CardContent>
                         </Card>
