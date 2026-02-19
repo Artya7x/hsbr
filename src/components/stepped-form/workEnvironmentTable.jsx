@@ -70,7 +70,7 @@ export default function WorkEnvironmentTable() {
                   Physical archives
                 </th>
                 <th className="p-3 text-left font-medium">
-                  Fireproof cabinets
+                  Physical / Fire Protection
                 </th>
               </tr>
             </thead>

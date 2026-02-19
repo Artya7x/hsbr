@@ -92,7 +92,7 @@ export default function ExternalDependenciesTable() {
     <Card className="border border-slate-200 shadow-sm mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-base font-medium">
-          External Dependencies
+         Suppliers
         </CardTitle>
 
         <Button type="button" variant="classic" onClick={addRow}>

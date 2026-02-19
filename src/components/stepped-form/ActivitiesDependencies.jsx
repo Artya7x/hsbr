@@ -25,8 +25,8 @@ export default function ActivitiesDependencies() {
             <thead className="border-b bg-background text-muted-foreground">
               <tr>
                 <th className="px-6 py-3 text-left font-medium">Activity</th>
-                <th className="px-6 py-3 text-left font-medium">Depends on</th>
-                <th className="px-6 py-3 text-left font-medium">Required by</th>
+                <th className="px-6 py-3 text-left font-medium">Upstream</th>
+                <th className="px-6 py-3 text-left font-medium">Downstream</th>
               </tr>
             </thead>
 

@@ -16,15 +16,47 @@ import { useForm, FormProvider } from "react-hook-form"
 import CreatableSelect from "react-select/creatable"
 import { Controller } from "react-hook-form"
 import { NavLink } from "react-router-dom"
+import { useFieldArray } from "react-hook-form"
+
+import React from "react"
+
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Field, FieldGroup } from "@/components/ui/field"
+
 
 export default function CreateDocumentPage() {
     const methods = useForm({
         defaultValues: {
             timeColumns: [],
+            organization: "",
+            department: "",
+            documentNumber: "",
+            version: "",
+            date: "",
+            criticalityLevels: {
+                min: "",
+                max: ""
+            }
+
+
         },
     })
 
-    const { control } = methods
+    const { control, watch } = methods
+    const [open, setOpen] = React.useState(false)
+
+    const timeIntervals = watch("timeColumns")
+    const criticality = watch("criticalityLevels")
+
 
     return (
 
@@ -49,31 +81,53 @@ export default function CreateDocumentPage() {
                                 {/* Organization */}
                                 <div className="grid gap-2">
                                     <Label>Organization</Label>
-                                    <Select>
-                                        <SelectTrigger className="h-9 text-sm">
 
-                                            <SelectValue placeholder="Select organization" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="org1">Org1</SelectItem>
-                                            <SelectItem value="org2">Org2</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                    <Controller
+                                        name="organization"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                            >
+                                                <SelectTrigger className="h-9 text-sm">
+                                                    <SelectValue placeholder="Select organization" />
+                                                </SelectTrigger>
+
+                                                <SelectContent>
+                                                    <SelectItem value="org1">Org1</SelectItem>
+                                                    <SelectItem value="org2">Org2</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        )}
+                                    />
                                 </div>
+
 
                                 {/* Department */}
                                 <div className="grid gap-2">
                                     <Label>Department</Label>
-                                    <Select>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select department" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="hr">HR</SelectItem>
-                                            <SelectItem value="it">IT</SelectItem>
-                                            <SelectItem value="finance">Finance</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                    <Controller
+                                        name="department"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                            >
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select department" />
+                                                </SelectTrigger>
+
+                                                <SelectContent>
+                                                    <SelectItem value="hr">HR</SelectItem>
+                                                    <SelectItem value="it">IT</SelectItem>
+                                                    <SelectItem value="finance">Finance</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        )}
+                                    />
+
                                 </div>
 
                                 <Separator />
@@ -87,12 +141,12 @@ export default function CreateDocumentPage() {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div className="grid gap-2">
                                             <Label>Document Number</Label>
-                                            <Input className="h-9 text-sm px-3" placeholder="e.g. 234" />
+                                            <Input className="h-9 text-sm px-3" placeholder="e.g. 234" {...methods.register("documentNumber")} />
                                         </div>
 
                                         <div className="grid gap-2">
                                             <Label>Version</Label>
-                                            <Input placeholder="e.g. 1.0" />
+                                            <Input placeholder="e.g. 1.0" {...methods.register("version")} />
                                         </div>
                                     </div>
 
@@ -100,7 +154,7 @@ export default function CreateDocumentPage() {
                                         {/* Date stays a real date */}
                                         <div className="grid gap-1.5 w-full max-w-xs">
                                             <Label>Date</Label>
-                                            <Input className="h-9 text-sm" type="date" />
+                                            <Input className="h-9 text-sm" type="date" {...methods.register("date")} />
                                         </div>
 
                                         {/* From interval */}
@@ -124,6 +178,25 @@ export default function CreateDocumentPage() {
                                             />
                                         </div>
 
+                                        <div className="grid gap-2 w-full max-w-lg">
+                                            <Label>Criticality thresholds</Label>
+
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <Input
+                                                    className="h-9 text-sm"
+                                                    placeholder="Min criticality"
+                                                    type="number"
+                                                    {...methods.register("criticalityLevels.min", { valueAsNumber: true })}
+                                                />
+
+                                                <Input
+                                                    className="h-9 text-sm"
+                                                    placeholder="Max criticality"
+                                                    type="number"
+                                                    {...methods.register("criticalityLevels.max", { valueAsNumber: true })}
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -132,9 +205,71 @@ export default function CreateDocumentPage() {
 
                                 {/* Actions */}
                                 <div className="flex justify-end gap-3">
-                                     <NavLink to="/survey">
-                                    <Button variant="classic">Create</Button>
-                                    </NavLink>
+                                    <Dialog open={open} onOpenChange={setOpen}>
+                                        <DialogTrigger asChild>
+                                            <Button
+                                                type="button"
+                                                variant="classic"
+                                                onClick={() => setOpen(true)}
+                                            >
+                                                Create
+                                            </Button>
+                                        </DialogTrigger>
+
+                                        <DialogContent className="sm:max-w-lg">
+                                            <DialogHeader>
+                                                <DialogTitle>Save as Template?</DialogTitle>
+                                                <DialogDescription>
+                                                    Would you like to save these settings as a reusable template?
+                                                </DialogDescription>
+                                            </DialogHeader>
+
+                                            <div className="space-y-4 py-2">
+
+                                                {/* Template Name */}
+                                                <div className="grid gap-2">
+                                                    <Label>Template Name</Label>
+                                                    <Input
+                                                        placeholder="Enter template name"
+                                                        {...methods.register("templateName")}
+                                                    />
+                                                </div>
+
+                                                {/* Preview Time Intervals */}
+                                                <div className="grid gap-2">
+                                                    <Label>Time Intervals</Label>
+                                                    <div className="text-sm text-muted-foreground bg-muted p-3 rounded-md">
+                                                        {timeIntervals?.length > 0
+                                                            ? timeIntervals.join(", ")
+                                                            : "No intervals selected"}
+                                                    </div>
+                                                </div>
+
+                                                {/* Preview Criticality */}
+                                                <div className="grid gap-2">
+                                                    <Label>Criticality Thresholds</Label>
+                                                    <div className="text-sm text-muted-foreground bg-muted p-3 rounded-md">
+                                                        Min: {criticality?.min ?? "-"} | Max: {criticality?.max ?? "-"}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <DialogFooter className="flex justify-end gap-2">
+                                                <DialogClose asChild>
+                                                    <Button variant="outline">Cancel</Button>
+                                                </DialogClose>
+
+                                                <Button
+                                                    onClick={() => {
+                                                        setOpen(false)
+                                                        methods.handleSubmit(console.log)()
+                                                    }}
+                                                >
+                                                    Confirm & Create
+                                                </Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
                                 </div>
                             </CardContent>
                         </Card>
