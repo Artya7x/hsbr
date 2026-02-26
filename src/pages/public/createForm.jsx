@@ -58,6 +58,37 @@ export default function CreateDocumentPage() {
     const criticality = watch("criticalityLevels")
 
 
+
+    // ---------------- Templates ----------------
+const surveyTemplates = {
+    basic: {
+        timeColumns: [1, 2, 3],
+        criticalityLevels: { min: 1, max: 5 }
+    },
+    advanced: {
+        timeColumns: [10, 20, 30],
+        criticalityLevels: { min: 5, max: 10 }
+    }
+}
+
+const handleTemplateChange = (value) => {
+    if (value === "new") {
+        methods.setValue("timeColumns", [])
+        methods.setValue("criticalityLevels.min", "")
+        methods.setValue("criticalityLevels.max", "")
+        return
+    }
+
+    const template = surveyTemplates[value]
+
+    if (template) {
+        methods.setValue("timeColumns", template.timeColumns)
+        methods.setValue("criticalityLevels.min", template.criticalityLevels.min)
+        methods.setValue("criticalityLevels.max", template.criticalityLevels.max)
+    }
+}
+
+
     return (
 
         <FormProvider {...methods}>
@@ -254,18 +285,26 @@ export default function CreateDocumentPage() {
                                                 </div>
                                             </div>
 
-                                            <DialogFooter className="flex justify-end gap-2">
-                                                <DialogClose asChild>
-                                                    <Button variant="outline">Cancel</Button>
-                                                </DialogClose>
+                                            <DialogFooter className="!flex !flex-row !justify-center items-center">
+                                                <Button
+                                                     variant="classic"
+                                                    onClick={() => {
+                                                        methods.setValue("templateName", "")
+                                                        setOpen(false)
+                                                        methods.handleSubmit(console.log)()
+                                                    }}
+                                                >
+                                                    Create Without Saving
+                                                </Button>
 
                                                 <Button
+                                                     variant="classic"
                                                     onClick={() => {
                                                         setOpen(false)
                                                         methods.handleSubmit(console.log)()
                                                     }}
                                                 >
-                                                    Confirm & Create
+                                                    Save as Template & Create
                                                 </Button>
                                             </DialogFooter>
                                         </DialogContent>
