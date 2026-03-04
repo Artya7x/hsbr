@@ -190,6 +190,35 @@ const handleTemplateChange = (value) => {
 
                                         {/* From interval */}
                                         <div className="grid gap-1.5 w-full max-w-xs">
+                                            {/* Template Selector */}
+<div className="grid gap-1.5 w-full max-w-xs">
+    <Label>Survey Template</Label>
+
+    <Controller
+        name="selectedTemplate"
+        control={control}
+        defaultValue="new"
+        render={({ field }) => (
+            <Select
+                value={field.value}
+                onValueChange={(value) => {
+                    field.onChange(value)
+                    handleTemplateChange(value)
+                }}
+            >
+                <SelectTrigger>
+                    <SelectValue placeholder="Select template" />
+                </SelectTrigger>
+
+                <SelectContent>
+                    <SelectItem value="new">Create New</SelectItem>
+                    <SelectItem value="basic">Basic Template</SelectItem>
+                    <SelectItem value="advanced">Advanced Template</SelectItem>
+                </SelectContent>
+            </Select>
+        )}
+    />
+</div>
                                             <Label>Time Intervals</Label>
 
                                             <Controller
