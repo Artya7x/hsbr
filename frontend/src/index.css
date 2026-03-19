@@ -1,6 +1,5 @@
 
-@import "@fontsource/inter/latin.css";
-@import "@fontsource/comic-neue/latin.css";
+@import "@fontsource/plus-jakarta-sans/latin.css";
 
 @import "tailwindcss";
 
@@ -157,7 +156,8 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
+    font-family: "Plus Jakarta Sans", sans-serif;
   }
 }
 

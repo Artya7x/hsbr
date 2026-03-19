@@ -22,4 +22,4 @@ class Organization(SQLModel, table=True):
     org_name: str
     phone: str = Field(unique=True)
     logo: str | None = None
-    account_id: int = Field(foreign_key="account.account_id")
+    account_id: int | None = Field(default = None , foreign_key="account.account_id")

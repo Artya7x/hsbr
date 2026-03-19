@@ -46,7 +46,7 @@ class OrganizationBase(SQLModel):
     org_name: str
     phone: str 
     logo: Optional[str] = None
-    account_id: int
+    
 
 class OrganizationCreate(OrganizationBase):
     pass
@@ -55,9 +55,10 @@ class OrganizationUpdate(SQLModel):
     org_name:  Optional[str] = None
     phone:  Optional[str] = None 
     logo:  Optional[str] = None
+    account_id: Optional[int] = None
 
 class OrganizationPublic(OrganizationBase):
     org_id: int
-
+    account_id: Optional[int]
     class Config:
         from_attributes = True

@@ -6,14 +6,10 @@ import { useNavigate } from "react-router-dom";
 export const columns = [
   
   {
-    accessorKey: "organization",
+    accessorKey: "org_name",
     header: "Organization",
   },
 
-  {
-    accessorKey: "manager_name",
-    header: "Manager Name",
-  },
     {
     accessorKey: "phone",
     header: "Phone",
@@ -27,13 +23,13 @@ export const columns = [
       const org = row.original ; 
       const navigate = useNavigate();
       return (
-        <div className = " flex gap-1 ">
-          <Button size="sm" variant="view"  onClick={() => {navigate(`/departments/${org.id}`);} }>
+        <div className="flex gap-4">
+          <Button size="sm" variant="classic" onClick={() => { navigate(`/departments/${org.org_id}`); }}>
             <FaEye /> View
-            </Button>
-           <Button size="sm" variant="edit">
-            <CiEdit /> Edit
-            </Button>
+          </Button>
+          <Button size="sm" variant="outline">
+            <CiEdit className="text-current" /> Edit
+          </Button>
         </div>
       )
 

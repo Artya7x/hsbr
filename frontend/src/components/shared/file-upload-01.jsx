@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { HelpCircle, Trash2, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 
-export default function FileUpload01() {
+export default function FileUpload01({ onFileChange }) {
   const fileInputRef = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fileProgresses, setFileProgresses] = useState({});
@@ -32,7 +32,7 @@ export default function FileUpload01() {
 
     const newFiles = Array.from(files);
     setUploadedFiles(newFiles);
- 
+    if (onFileChange) onFileChange(newFiles[0] || null);
   };
 
   const handleBoxClick = () => {
@@ -50,6 +50,7 @@ export default function FileUpload01() {
 
   const removeFile = (filename) => {
     setUploadedFiles([]);
+    if (onFileChange) onFileChange(null);
     setFileProgresses((prev) => {
       const newProgresses = { ...prev };
       delete newProgresses[filename];

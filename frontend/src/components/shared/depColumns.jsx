@@ -22,7 +22,7 @@ export const columns = [
       const navigate = useNavigate();
       return (
         <div className = " flex gap-1 ">
-            <Button size="sm" variant="view"  onClick={() => {navigate(`/Surveys/${org.id}`);} }>
+            <Button size="sm" variant="classic" onClick={() => { navigate(`/departments/${org.org_id}/surveys/${org.id}`); }}>
                 <FaEye /> View
             </Button>
           

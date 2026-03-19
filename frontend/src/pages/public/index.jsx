@@ -2,47 +2,31 @@
 import {columns} from "../../components/shared/orgColumns";
 import { useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashBoardLayout";
-import logo from "../../assets/react.svg";
+
 import DataTable from "@/components/ui/DataTable";
 import NewOrgModal from "@/components/shared/NewOrgModal";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
+import api from "@/services/api"
 
 export default function IndexPage() {
 
 const [data, setData] = useState([]);
 
+const fetchOrganizations = () => {
+    api.get("/organizations/")
+    .then(result => setData(result.data))
+    .catch(error => console.error(error));
+};
+
 useEffect(() => {
+    fetchOrganizations();
+}, []);
 
-    const result = [
-
-        {
-            id: 1,
-          
-            organization: "Org1",
-
-            manager_name: "Marios",
-            phone: 99027659,
-    },
-       {
-        id: 2,
-       
-        organization: "Org2",
-       
-        manager_name: "Andreas",
-        phone: 99178002,
-    }
-
-    ];
-    setData(result);
-
-},[] );
     return (
 
         <DashboardLayout>
-            <div className = "flex pt-5 pl-6  text-lg font-semibold">Organization</div>
-            <div className = "flex-1 p-6 pt-1 space-y-6">   
-                <DataTable columns={columns} data={data} toolbarAction = {<NewOrgModal />}> </DataTable>
+            <div className="flex-1 p-6 space-y-6">
+                <DataTable columns={columns} data={data} title="Organizations" toolbarAction={<NewOrgModal onSuccess={fetchOrganizations} />} />
             </div>
         </DashboardLayout>
 

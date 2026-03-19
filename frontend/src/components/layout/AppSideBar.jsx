@@ -43,11 +43,14 @@ export default function AppSidebar(props) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              className="data-[slot=sidebar-menu-button]:!p-2 data-[slot=sidebar-menu-button]:!h-auto"
             >
               <a href="#">
-                <IconVectorBezierCircle className="!size-6" />
-                <span className="text-base text-xl font-semibold">HSBR</span>
+                <IconVectorBezierCircle className="!size-6 shrink-0" />
+                <div className="flex flex-col leading-tight">
+                  <span className="text-base font-semibold">HSBR</span>
+                  <span className="text-xs font-normal opacity-70">Acme Consulting</span>
+                </div>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

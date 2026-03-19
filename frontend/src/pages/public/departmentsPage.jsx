@@ -1,6 +1,7 @@
 
 import {columns} from "../../components/shared/depColumns";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashBoardLayout";
 import logo from "../../assets/react.svg";
 import DataTable from "@/components/ui/DataTable";
@@ -9,24 +10,14 @@ import NewDepModal from "@/components/shared/NewDepModal";
 
 export default function DepartmentsPage() {
 
+const { id: orgId } = useParams();
 const [data, setData] = useState([]);
 
 useEffect(() => {
 
     const result = [
-
-        {
-        id: 1,
-        departments: "dep1",
-        surveys: 5,
-       
-    },
-       {
-        id: 2,
-        departments: "dep2",
-        surveys: 3,
-    }
-
+        { id: 1, departments: "dep1", surveys: 5, org_id: orgId },
+        { id: 2, departments: "dep2", surveys: 3, org_id: orgId },
     ];
     setData(result);
 

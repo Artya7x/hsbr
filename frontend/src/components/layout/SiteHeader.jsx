@@ -3,6 +3,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import {  Avatar, AvatarImage, AvatarFallback }from "@/components/ui/avatar"
 import logo from "../../assets/react.svg";
+import AppBreadcrumb from "@/components/shared/AppBreadcrumb";
  import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -40,8 +41,8 @@ export default function SiteHeader() {
           className="mx-2 data-[orientation=vertical]:h-4"
         />
 
-        {/* PAGE TITLE */}
-        <h1 className="text-base font-medium">Documents</h1>
+        {/* BREADCRUMB */}
+        <AppBreadcrumb />
 
         {/* RIGHT SIDE BUTTONS */}
         <div className="ml-auto flex items-center gap-2">

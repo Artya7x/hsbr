@@ -1,11 +1,12 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from app.db.init_db import create_db
-from typing import Annotated
-from fastapi import Depends 
-from app.models.accounts import Account
-from sqlalchemy.orm import  Session
-from app.db.database import get_session
+from app.routers import organization, account
+import os
+
+os.makedirs("static/logos", exist_ok=True)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -14,11 +15,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-SessionDep = Annotated[Session, Depends(get_session)]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-@app.post('/test')
-def create(account: Account, session: SessionDep) -> Account:
-    session.add(account)
-    session.commit()
-    session.refresh(account)
-    return account
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+app.include_router(organization.router)
+app.include_router(account.router)
