@@ -25,8 +25,8 @@ useEffect(() => {
     return (
 
         <DashboardLayout>
-            <div className="flex-1 p-6 space-y-6">
-                <DataTable columns={columns} data={data} title="Organizations" toolbarAction={<NewOrgModal onSuccess={fetchOrganizations} />} />
+            <div className="flex-1 p-6 pt-1 space-y-6">
+                <DataTable columns={columns(fetchOrganizations)} data={data} title="Organizations" toolbarAction={<NewOrgModal onSuccess={fetchOrganizations} />} />
             </div>
         </DashboardLayout>
 

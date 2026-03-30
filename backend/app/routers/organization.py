@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter, File, UploadFile, Form
 from app.db.database import SessionDep
-from app.schemas.accounts import OrganizationCreate, OrganizationPublic
+from app.schemas.accounts import OrganizationCreate, OrganizationPublic, OrganizationUpdate
 from app.services.organization import OrganizationSer
 from app.schemas.organizations import DepartmentCreate, DepartmentPublic
 from app.services.department import DepartmentSer
@@ -12,14 +12,8 @@ router = APIRouter(
     tags = ["organizations"]
 )
 
-
 @router.post("/")
-async def add_organization(
-    db: SessionDep,
-    org_name: str = Form(...),
-    phone: str = Form(...),
-    logo: UploadFile = File(None)
-) -> OrganizationPublic:
+async def add_organization(db: SessionDep,org_name: str = Form(...),phone: str = Form(...),logo: UploadFile = File(None)) -> OrganizationPublic:
     logo_path = None
     if logo and logo.filename:
         ext = logo.filename.rsplit(".", 1)[-1]
@@ -51,3 +45,20 @@ def view_organizations(db: SessionDep) -> list[OrganizationPublic]:
 def view_departments(db: SessionDep, org_id: int) -> list[DepartmentPublic]:
     service  = DepartmentSer(db)
     return service.read_department(org_id)
+
+
+@router.patch("/{org_id}")
+async def update_organization(db: SessionDep, org_id: int, org_name: str = Form(None), phone: str = Form(None), logo: UploadFile = File(None)) -> OrganizationPublic:
+    logo_path = None
+    if logo and logo.filename:
+        ext = logo.filename.rsplit(".", 1)[-1]
+        filename = f"{uuid.uuid4()}.{ext}"
+        logo_path = f"static/logos/{filename}"
+        with open(logo_path, "wb") as f:
+            shutil.copyfileobj(logo.file, f)
+
+    data = OrganizationUpdate(org_name=org_name, phone=phone, logo=logo_path)
+    service = OrganizationSer(db)
+    return service.update_organization_ser(org_id, data)
+
+

@@ -8,10 +8,12 @@ import PrevButton from "./prevbutton"
 import NextButton from "./nextbutton"
 import ProgressIndicator from "./progress-indicator"
 
-import { TIME_INTERVALS } from "../shared/timePeriod"
+
 export const MultiStepFormContext = createContext(null)
 
-function MultiStepForm({ steps }) {
+function MultiStepForm({ steps, surveyId, surveyParams }) {
+
+  const intervals = surveyParams?.intervals ?? []
 
   const methods = useForm({
     resolver: zodResolver(Schema),
@@ -21,8 +23,8 @@ function MultiStepForm({ steps }) {
           name: "", description: "", impacts: [], impactDescription: "",
           dependsOn: undefined,
           requiredBy: undefined,
-          impactMatrix: TIME_INTERVALS.map((interval) => ({
-            intervalId: interval.id,
+          impactMatrix: intervals.map((interval) => ({
+            intervalId: interval.interval_id,
             severity: "",
           })),
 
@@ -158,6 +160,8 @@ const errorStepPositions = new Set(
     previousStep,
     goToStep,
     steps,
+    intervals,
+    surveyParams,
   }
 
 

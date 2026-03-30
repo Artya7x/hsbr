@@ -1,7 +1,7 @@
 
-from app.schemas.accounts import OrganizationCreate
-from app.crud.accounts import create_organization, read_organizations
-
+from app.schemas.accounts import OrganizationCreate, OrganizationUpdate
+from app.crud.accounts import create_organization, read_organizations, update_organization, get_organization_by_id
+from fastapi import HTTPException
 from sqlmodel import Session
 
 class OrganizationSer:
@@ -20,3 +20,14 @@ class OrganizationSer:
 
         return org_data
 
+
+    def update_organization_ser(self, org_id: int, org_data: OrganizationUpdate):
+        
+        org = get_organization_by_id(self.db, org_id)
+        if not org:
+            raise HTTPException(status_code = 404, detail= "Something went wrong")
+        
+        updated_data = update_organization(self.db, org_id, org_data)
+
+        return updated_data
+        

@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { CiEdit } from "react-icons/ci";
 import api from "@/services/api";
 
 const schema = z.object({
@@ -31,13 +32,18 @@ const schema = z.object({
     .regex(/^\d+$/, "Phone must contain only numbers"),
 });
 
-export default function NewOrgModal({ onSuccess }) {
+export default function NewOrgModal({ onSuccess, org }) {
+  const isEdit = !!org;
   const [logoFile, setLogoFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const closeRef = useRef(null);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: {
+      org_name: org?.org_name ?? "",
+      phone: org?.phone ?? "",
+    },
   });
 
   const onSubmit = (values) => {
@@ -48,19 +54,20 @@ export default function NewOrgModal({ onSuccess }) {
     formData.append("phone", values.phone);
     if (logoFile) formData.append("logo", logoFile);
 
-    api.post("/organizations/", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
+    const request = isEdit
+      ? api.patch(`/organizations/${org.org_id}`, formData, { headers: { "Content-Type": "multipart/form-data" } })
+      : api.post("/organizations/", formData, { headers: { "Content-Type": "multipart/form-data" } });
+
+    request
       .then(() => {
-        reset();
-        setLogoFile(null);
+        if (!isEdit) { reset(); setLogoFile(null); }
         closeRef.current?.click();
-        toast.success("Organization added successfully", { duration: 3000 });
+        toast.success(isEdit ? "Organization updated successfully" : "Organization added successfully", { duration: 3000 });
         if (onSuccess) onSuccess();
       })
       .catch((err) => {
         console.error(err);
-        toast.error("Failed to add organization", { duration: 5000 });
+        toast.error(isEdit ? "Failed to update organization" : "Failed to add organization", { duration: 5000 });
       })
       .finally(() => setLoading(false));
   };
@@ -68,12 +75,15 @@ export default function NewOrgModal({ onSuccess }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button type="button" variant="classic">Add Organization</Button>
+        {isEdit
+          ? <Button size="sm" variant="outline"><CiEdit className="text-current" /> Edit</Button>
+          : <Button type="button" variant="classic">Add Organization</Button>
+        }
       </DialogTrigger>
       <DialogContent className="sm:max-w-[450px] animate-none">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle className="py-2">Create New Organization</DialogTitle>
+            <DialogTitle className="py-2">{isEdit ? "Edit Organization" : "Create New Organization"}</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-1">
@@ -98,7 +108,7 @@ export default function NewOrgModal({ onSuccess }) {
             </div>
             <div className="grid gap-3">
               <Label>Logo</Label>
-              <FileUpload01 onFileChange={setLogoFile} />
+              <FileUpload01 onFileChange={setLogoFile} existingLogo={org?.logo ? `${import.meta.env.VITE_API_URL}/${org.logo}` : null} />
             </div>
           </div>
 

@@ -1,0 +1,40 @@
+Process SpawnProcess-1:
+Traceback (most recent call last):
+  File "C:\Users\artem\AppData\Local\Programs\Python\Python310\lib\multiprocessing\process.py", line 315, in _bootstrap    
+    self.run()
+  File "C:\Users\artem\AppData\Local\Programs\Python\Python310\lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\artem\Desktop\HSBR\backend\.venv\lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "C:\Users\artem\Desktop\HSBR\backend\.venv\lib\site-packages\uvicorn\server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "C:\Users\artem\Desktop\HSBR\backend\.venv\lib\site-packages\uvicorn\_compat.py", line 60, in asyncio_run
+    return loop.run_until_complete(main)
+  File "C:\Users\artem\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 641, in run_until_complete
+    return future.result()
+  File "C:\Users\artem\Desktop\HSBR\backend\.venv\lib\site-packages\uvicorn\server.py", line 79, in serve
+    await self._serve(sockets)
+  File "C:\Users\artem\Desktop\HSBR\backend\.venv\lib\site-packages\uvicorn\server.py", line 86, in _serve
+    config.load()
+  File "C:\Users\artem\Desktop\HSBR\backend\.venv\lib\site-packages\uvicorn\config.py", line 441, in load
+    self.loaded_app = import_from_string(self.app)
+  File "C:\Users\artem\Desktop\HSBR\backend\.venv\lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "C:\Users\artem\AppData\Local\Programs\Python\Python310\lib\importlib\__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "C:\Users\artem\Desktop\HSBR\backend\app\main.py", line 6, in <module>
+    from app.routers import organization, account, template
+  File "C:\Users\artem\Desktop\HSBR\backend\app\routers\template.py", line 3, in <module>
+    from app.services.template import Template
+  File "C:\Users\artem\Desktop\HSBR\backend\app\services\template.py", line 7, in <module>
+    from app.crud.surveys import get_template_names, get_parameters_intervals, create_survey, create_template_parameters, create_template_version, create_intervals
+  File "C:\Users\artem\Desktop\HSBR\backend\app\crud\surveys.py", line 50
+
+    ^
+IndentationError: expected an indented block after function definition on line 49

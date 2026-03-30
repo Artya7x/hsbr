@@ -1,4 +1,4 @@
-from app.schemas.accounts import OrganizationCreate, AccountCreate
+from app.schemas.accounts import OrganizationCreate, AccountCreate, OrganizationUpdate
 from app.models.accounts import Organization, Account
 from sqlmodel import Session, select
 
@@ -33,3 +33,15 @@ def get_organization_by_id(db: Session, org_id: int):
     sql = select(Organization).where(Organization.org_id == org_id)
     return db.exec(sql).first()
 
+def update_organization(db: Session, org_id: int, org_data: OrganizationUpdate ):
+    old_info = get_organization_by_id(db, org_id)
+    new_info = org_data.model_dump(exclude_unset = True)
+
+    for attribute, value in new_info.items():
+        setattr(old_info,attribute,value)
+
+    db.add(old_info)
+    db.commit()
+    db.refresh(old_info)
+
+    return old_info

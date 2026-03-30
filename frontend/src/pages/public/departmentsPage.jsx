@@ -7,28 +7,33 @@ import logo from "../../assets/react.svg";
 import DataTable from "@/components/ui/DataTable";
 import { de } from "zod/v4/locales";
 import NewDepModal from "@/components/shared/NewDepModal";
-
+import api from "@/services/api";
 export default function DepartmentsPage() {
 
-const { id: orgId } = useParams();
+
 const [data, setData] = useState([]);
+const {id} = useParams()
+const fetchDepartment = () => {
+
+    api.get(`/organizations/${id}/department`)
+    .then(result => setData(result.data))
+    .catch(error => console.error(error))
+    
+}
+
 
 useEffect(() => {
 
-    const result = [
-        { id: 1, departments: "dep1", surveys: 5, org_id: orgId },
-        { id: 2, departments: "dep2", surveys: 3, org_id: orgId },
-    ];
-    setData(result);
+    fetchDepartment();
+    
 
 },[] );
 
     return (
 
         <DashboardLayout>
-            <div className = "flex pt-5 pl-6  text-lg font-semibold">Departments</div>
             <div className = "flex-1 p-6 pt-1 space-y-6">
-                <DataTable columns={columns} data={data} toolbarAction = {<NewDepModal />} ></DataTable>
+                <DataTable columns={columns} data={data} title = "Departments" toolbarAction = {<NewDepModal />} ></DataTable>
             </div>
         </DashboardLayout>
 

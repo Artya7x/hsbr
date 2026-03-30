@@ -10,7 +10,7 @@ import {
   CardTitle,
   CardContent,
 } from "../ui/card"
-import { TIME_INTERVALS } from "../shared/timePeriod"
+import { useMultiStepForm } from "@/hooks/use-stepped-form"
 
 import {useState} from "react";
 import CreatableSelect from "react-select/creatable"
@@ -32,6 +32,7 @@ export default function ActivitiesTable() {
     setValue,
     formState: { errors },
   } = useFormContext()
+  const { intervals } = useMultiStepForm()
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -46,8 +47,8 @@ export default function ActivitiesTable() {
       description: "",
       impacts: [],
       impactDescription: "",
-      impactMatrix: TIME_INTERVALS.map((interval) => ({
-        intervalId: interval.id,
+      impactMatrix: intervals.map((interval) => ({
+        intervalId: interval.interval_id,
         severity: "",
       })),
       recovery: {

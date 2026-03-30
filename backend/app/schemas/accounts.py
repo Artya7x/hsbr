@@ -55,7 +55,6 @@ class OrganizationUpdate(SQLModel):
     org_name:  Optional[str] = None
     phone:  Optional[str] = None 
     logo:  Optional[str] = None
-    account_id: Optional[int] = None
 
 class OrganizationPublic(OrganizationBase):
     org_id: int

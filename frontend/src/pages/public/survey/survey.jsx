@@ -5,10 +5,10 @@ import Step3 from "./step3"
 import Step4 from "./step4"
 import Step5 from "./step5"
 import DashboardLayout from "@/components/layout/DashBoardLayout";
-
-
-import { User, Home, CreditCard } from "lucide-react"
-
+import { useParams, useLocation, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import api from "@/services/api";
 import MultiStepForm from "../../../components/stepped-form/MultiStepForm"
 
 export const checkoutSteps = [
@@ -46,10 +46,24 @@ export const checkoutSteps = [
 ]
 
 export default function Survey() {
+  const { surveyId } = useParams()
+  const location = useLocation()
+  const [surveyParams, setSurveyParams] = useState(null)
+
+  useEffect(() => {
+    if (!location.state?.created) return
+    toast.success("Survey created successfully")
+    api.get(`/survey/${surveyId}`)
+      .then(res => setSurveyParams(res.data))
+      .catch(err => console.error(err))
+  }, [])
+
+  if (!location.state?.created) return <Navigate to="/" replace />
+  if (!surveyParams) return null
+
   return (
     <DashboardLayout>
-      <MultiStepForm steps={checkoutSteps} localStorageKey='checkout-form' />
-     </DashboardLayout>
+      <MultiStepForm steps={checkoutSteps} surveyId={parseInt(surveyId)} surveyParams={surveyParams} />
+    </DashboardLayout>
   )
-
 }

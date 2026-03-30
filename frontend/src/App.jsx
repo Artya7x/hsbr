@@ -17,7 +17,7 @@ function App() {
     <Route path="/" element={<IndexPage />} />
     <Route path="/departments/:id" element={<DepartmentsPage />} />
     <Route path="/departments/:deptId/surveys/:surveyId" element={<Surveys/>} />
-    <Route path="/survey" element={<Survey/>} />
+    <Route path="/survey/:surveyId" element={<Survey/>} />
     <Route path = "/createForm" element = {<CreateForm/>}></Route>
   </Routes>
   </>

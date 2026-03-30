@@ -17,7 +17,6 @@ class Resource(SQLModel, table=True):
 class Impact(SQLModel, table=True):
     impact_id: int | None = Field(default=None, primary_key=True)
     impact_type: str | None = None
-    explanation: str | None = None
 
 
 class Application(SQLModel, table=True):

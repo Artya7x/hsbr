@@ -1,11 +1,8 @@
 import React from "react"
 import { useFormContext } from "react-hook-form"
+import { useMultiStepForm } from "@/hooks/use-stepped-form"
 
-import {
-  TIME_INTERVALS,
-  IMPACT_SCALE,
-  CLASSIFICATION_RULES,
-} from "@/components/shared/timePeriod"
+import { IMPACT_SCALE } from "@/components/shared/timePeriod"
 
 import { Input } from "@/components/ui/input"
 import {
@@ -23,19 +20,20 @@ import {
 } from "@/components/ui/tabs"
 
 
-function classifyByRto(rtoHours) {
+function classifyByRto(rtoHours, minThreshold, maxThreshold) {
   if (rtoHours === null || rtoHours === undefined || rtoHours === "") return null
 
   const numeric = Number(rtoHours)
   if (Number.isNaN(numeric)) return null
 
-  return (
-    CLASSIFICATION_RULES.find((rule) => numeric <= rule.maxRtoHours) || null
-  )
+  if (numeric <= minThreshold) return { label: "Critical / Vital" }
+  if (numeric <= maxThreshold) return { label: "Important / Essential" }
+  return { label: "Useful" }
 }
 
 export default function ImpactMatrixTable() {
   const { watch, setValue, trigger, formState: { errors } } = useFormContext()
+  const { intervals, surveyParams } = useMultiStepForm()
   const activities = watch("activities") || []
 
   if (!activities.length) {
@@ -60,12 +58,12 @@ export default function ImpactMatrixTable() {
             <tr className="border-b border-border/60 ">
               <th className="px-6 py-3 text-left  tracking-wide font-medium min-w-[190px]">Activity</th>
 
-              {showImpact && TIME_INTERVALS.map((interval) => (
+              {showImpact && intervals.map((interval) => (
                 <th
-                  key={interval.id}
+                  key={interval.interval_id}
                   className="px-9 py-3 text-center font-medium  tracking-wide min-w-[160px]"
                 >
-                  {interval.label}
+                  {interval.interval_number}h
                 </th>
               ))}
 
@@ -92,7 +90,7 @@ export default function ImpactMatrixTable() {
               const rto = activity?.recovery?.rtoHours ?? ""
               const mtpd = activity?.recovery?.mtpdHours ?? ""
               const rpo = activity?.recovery?.rpo ?? ""
-              const classification = classifyByRto(rto)
+              const classification = classifyByRto(rto, surveyParams?.min_threshold, surveyParams?.max_threshold)
 
 
 
@@ -121,7 +119,7 @@ export default function ImpactMatrixTable() {
                         errors?.activities?.[activityIndex]?.impactMatrix?.[cellIndex]?.severity?.message
 
                       return (
-                        <td key={cell.intervalId} className="px-6 py-3">
+                        <td key={cellIndex} className="px-6 py-3">
                           <select
                             className={`w-full rounded-md border px-2 py-1.5 text-sm focus:ring-2 focus:ring-ring
                             ${severityError ? "border-red-500" : "border-border"}`}
@@ -283,13 +281,6 @@ export default function ImpactMatrixTable() {
                       <div className="inline-flex flex-col items-center gap-1">
                         <span className="text-sm font-semibold">
                           {classification.label}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          RTO ≤{" "}
-                          {classification.maxRtoHours === Infinity
-                            ? "∞"
-                            : classification.maxRtoHours}
-                          h
                         </span>
                       </div>
                     ) : (

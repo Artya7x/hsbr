@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { HelpCircle, Trash2, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 
-export default function FileUpload01({ onFileChange }) {
+export default function FileUpload01({ onFileChange, existingLogo }) {
   const fileInputRef = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fileProgresses, setFileProgresses] = useState({});
@@ -92,7 +92,19 @@ export default function FileUpload01({ onFileChange }) {
           
 
           <div
-            className={cn("pb-5 space-y-3", uploadedFiles.length > 0 ? "mt-4" : "")}>
+            className={cn("pb-5 space-y-3", uploadedFiles.length > 0 || (existingLogo && uploadedFiles.length === 0) ? "mt-4" : "")}>
+            {uploadedFiles.length === 0 && existingLogo && (
+              <div className="border border-border rounded-lg p-2 flex flex-col">
+                <div className="flex items-center gap-2">
+                  <div className="w-18 h-14 bg-muted rounded-sm flex items-center justify-center self-start row-span-2 overflow-hidden">
+                    <img src={existingLogo} alt="Current logo" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 pr-1 min-w-0">
+                    <span className="text-sm text-muted-foreground">Current logo</span>
+                  </div>
+                </div>
+              </div>
+            )}
             {uploadedFiles.map((file, index) => {
               const imageUrl = URL.createObjectURL(file);
 
@@ -127,7 +139,7 @@ export default function FileUpload01({ onFileChange }) {
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
-           
+
                     </div>
                   </div>
                 </div>

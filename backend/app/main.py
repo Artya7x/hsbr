@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from app.db.init_db import create_db
-from app.routers import organization, account
+from app.routers import organization, account, template, survey
 import os
 
 os.makedirs("static/logos", exist_ok=True)
@@ -27,3 +27,5 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(organization.router)
 app.include_router(account.router)
+app.include_router(template.router)
+app.include_router(survey.router)
