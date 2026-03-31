@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form"
 import { useMultiStepForm } from "../../../hooks/use-stepped-form"
 import React, {useState} from "react";
 
-import ImpactTimes from "@/components/stepped-form/ImpactTimes";
+import ImpactMatrixTable from "@/components/stepped-form/impact/ImpactMatrixTable";
 export default function Step2(){
   
   const {register,getValues,setError,formState: { errors }} = useFormContext()
@@ -20,7 +20,7 @@ export default function Step2(){
 
   return (
       <div>
-        <ImpactTimes />
+        <ImpactMatrixTable />
     </div>
   )
 }
